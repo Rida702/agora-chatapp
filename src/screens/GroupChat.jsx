@@ -298,8 +298,13 @@ const App = () => {
                     />
                 </View>
                 <View style={styles.buttonCon}>
-                    <Text style={styles.btn2} onPress={addgroupmembers}>
+                    <Text style={styles.btn2} onPress={creategroup}>
                         Create Group
+                    </Text>
+                </View>
+                <View style={styles.buttonCon}>
+                    <Text style={styles.btn2} onPress={addgroupmembers}>
+                        Add new members to the group
                     </Text>
                 </View>
 
