@@ -31,7 +31,7 @@ const App = () => {
     //Set Group name and group description
     const [groupName, setGroupName] = React.useState(null);
     const [groupDescription, setGroupDescription] = React.useState(null);
-    const [groupId, setGroupId] = React.useState(null);
+    const [groupId, setGroupId] = React.useState('260632179965954');
     const [user, setUser] = React.useState(null);
     const [logText, setWarnText] = React.useState('Show log area');
     const chatClient = ChatClient.getInstance();
@@ -162,7 +162,6 @@ const App = () => {
     };
     
 
-
     // Logs out from server.
     const logout = () => {
         if (this.isInitialized === false || this.isInitialized === undefined) {
@@ -221,12 +220,30 @@ const App = () => {
     }
 
     //get group from server 
-    const getgroup = () => {
-        let group = chatClient.groupManager.fetchGroupInfoFromServer(
-            '260632179965954',
+    const getgroup = async () => {
+        console.log("Inside get group")
+        let group = await chatClient.groupManager.fetchGroupInfoFromServer(
+            groupId,
             false
         )
+        console.log(group)
         return group;
+    }
+    
+    //Add group Members 
+    const addgroupmembers = async () => {
+        await chatClient.groupManager.addMembers(
+            groupId,
+            ["rida1234sahd", "user1", "user2", "user12"],
+            "Welcome to the group"
+        )
+        .then(() => {
+            console.log("Members successfully added to the group.");
+        })
+        .catch((error) => {
+            console.error("Failed to add members to the group:", error);
+        });
+        
     }
 
     // Renders the UI.
@@ -281,7 +298,7 @@ const App = () => {
                     />
                 </View>
                 <View style={styles.buttonCon}>
-                    <Text style={styles.btn2} onPress={creategroup}>
+                    <Text style={styles.btn2} onPress={addgroupmembers}>
                         Create Group
                     </Text>
                 </View>
