@@ -21,7 +21,7 @@ const GroupChat = ({ navigation }) => {
     const { chatClient, isInitialized } = useContext(AgoraContext);
     const title = 'AgoraChatQuickstart';
     const [username, setUsername] = React.useState('rida1234sahd');
-    const [chatToken, setChatToken] = React.useState('007eJxTYHjutu6iXNTMbdfcX09cHrd/msVETveP7futz00+/Y8xz2+RAkOioaGFkaWxcVJaopGJeZqRhZGFsVFiYqKhuWmSmYGFSW/Gv7SGQEaGO+VmjIwMrAyMQAjiqzCYJiUamRkkG+haGFia6xoapqbpJlkkWupamiaZm5qbmaZYpqUAADJ+KOg=')
+    const [chatToken, setChatToken] = React.useState('007eJxTYHjkIB/ZFa3Fu/9go1ymdT/r21UcbvVXLgbyPTtUzbK/S1aBIdHQ0MLI0tg4KS3RyMQ8zcjCyMLYKDEx0dDcNMnMwMKkfPf/tIZARgaxR6KsjAysDIxACOKrMJgmJRqZGSQb6FoYWJrrGhqmpukmWSRa6lqaJpmbmpuZplimpQAAk1olNg==')
     //Set Group name and group description
     const [groupName, setGroupName] = React.useState(null);
     const [groupDescription, setGroupDescription] = React.useState(null);
