@@ -4,7 +4,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 
 const ShowGroup = () => {
   const route = useRoute(); 
-  const navigation = useNavigation(); // Access navigation
+  const navigation = useNavigation();
   const { joinedGroups } = route.params;
 
   const handleItemPress = (group) => {

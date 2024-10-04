@@ -1,5 +1,5 @@
 // Imports dependencies.
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import {
     SafeAreaView,
     ScrollView,
@@ -8,123 +8,25 @@ import {
     TextInput,
     View,
 } from 'react-native';
-import {
-    ChatClient,
-    ChatOptions,
-    ChatGroupOptions,
-    ChatGroupManager
-} from 'react-native-agora-chat';
 import { Button } from 'react-native';
-import ShowGroup from './ShowGroup'
+//To initialize Agora SDK
+import AgoraContext from '../context/AgoraContext';
+//Authorize User
+import { login, logout } from '../agora/authAgora';
+//To handle group related functions
+import { creategroup, getjoinedgroups, getCurrentUsername, addgroupmembers } from '../agora/groupManager';
 
 
-// Defines the App object.
 const GroupChat = ({ navigation }) => {
-    // Defines the variable.
+    const { chatClient, isInitialized } = useContext(AgoraContext);
     const title = 'AgoraChatQuickstart';
-    // Replaces <your appKey> with your app key.
-    const appKey = '411216339#1407114';
-    // Replaces <your userId> with your user ID.
     const [username, setUsername] = React.useState('rida1234sahd');
-    // Replaces <your agoraToken> with your Agora token.
     const [chatToken, setChatToken] = React.useState('007eJxTYHjutu6iXNTMbdfcX09cHrd/msVETveP7futz00+/Y8xz2+RAkOioaGFkaWxcVJaopGJeZqRhZGFsVFiYqKhuWmSmYGFSW/Gv7SGQEaGO+VmjIwMrAyMQAjiqzCYJiUamRkkG+haGFia6xoapqbpJlkkWupamiaZm5qbmaZYpqUAADJ+KOg=')
-    // Set Group Chat Token
-    const [groupChatToken, setGroupChatToken] = React.useState('<Your Group Token>');
     //Set Group name and group description
     const [groupName, setGroupName] = React.useState(null);
     const [groupDescription, setGroupDescription] = React.useState(null);
-    const [groupId, setGroupId] = React.useState('260632179965954');
-    const [joinedGroups, setJoinedGroups] = React.useState([]);
 
-    const [logText, setWarnText] = React.useState('Show log area');
-    const chatClient = ChatClient.getInstance();
-    const chatManager = chatClient.chatManager;
-    const groupManager = chatClient.ChatGroupManager;
-    // Outputs console logs.
-    useEffect(() => {
-        logText.split('\n').forEach((value, index, array) => {
-            if (index === 0) {
-                console.log(value);
-            }
-        });
-    }, [logText]);
-    // Outputs UI logs.
-    const rollLog = text => {
-        setWarnText(preLogText => {
-            let newLogText = text;
-            preLogText
-                .split('\n')
-                .filter((value, index, array) => {
-                    if (index > 8) {
-                        return false;
-                    }
-                    return true;
-                })
-                .forEach((value, index, array) => {
-                    newLogText += '\n' + value;
-                });
-            return newLogText;
-        });
-    };
-    useEffect(() => {
-        // Registers listeners for messaging.
-        const setMessageListener = () => {
-            let msgListener = {
-                onMessagesReceived(messages) {
-                    for (let index = 0; index < messages.length; index++) {
-                        rollLog('received msgId: ' + messages[index].msgId);
-                    }
-                },
-                onCmdMessagesReceived: messages => { },
-                onMessagesRead: messages => { },
-                onGroupMessageRead: groupMessageAcks => { },
-                onMessagesDelivered: messages => { },
-                onMessagesRecalled: messages => { },
-                onConversationsUpdate: () => { },
-                onConversationRead: (from, to) => { },
-            };
-            chatManager.removeAllMessageListener();
-            chatManager.addMessageListener(msgListener);
-        };
-        // Initializes the SDK.
-        // Initializes any interface before calling it.
-        const init = () => {
-            let o = new ChatOptions({
-                autoLogin: false,
-                appKey: appKey,
-            });
-            chatClient.removeAllConnectionListener();
-            chatClient
-                .init(o)
-                .then(() => {
-                    rollLog('init success');
-                    this.isInitialized = true;
-                    let listener = {
-                        onTokenWillExpire() {
-                            rollLog('token expire.');
-                        },
-                        onTokenDidExpire() {
-                            rollLog('token did expire');
-                        },
-                        onConnected() {
-                            rollLog('onConnected');
-                            setMessageListener();
-                        },
-                        onDisconnected(errorCode) {
-                            rollLog('onDisconnected:' + errorCode);
-                        },
-                    };
-                    chatClient.addConnectionListener(listener);
-                })
-                .catch(error => {
-                    rollLog(
-                        'init fail: ' +
-                        (error instanceof Object ? JSON.stringify(error) : error),
-                    );
-                });
-        };
-        init();
-    }, [chatClient, chatManager, groupManager, appKey]);
+    const [groupId, setGroupId] = React.useState('260632179965954');
 
     //Check for current user login status
     const checkLoginStatus = async () => {
@@ -143,120 +45,6 @@ const GroupChat = ({ navigation }) => {
             return null;
         }
     };
-
-
-    // Logs in with an account ID and a token.
-    const login = async () => {
-        if (this.isInitialized === false || this.isInitialized === undefined) {
-            rollLog('Perform initialization first.');
-            return;
-        }
-        rollLog('start login ...');
-
-        try {
-            await chatClient.loginWithAgoraToken(username, chatToken);
-            rollLog('login operation success.');
-
-            // Call the separate function to check the login status
-            await checkLoginStatus();
-        } catch (reason) {
-            rollLog('login fail: ' + JSON.stringify(reason));
-        }
-    };
-
-
-    // Logs out from server.
-    const logout = () => {
-        if (this.isInitialized === false || this.isInitialized === undefined) {
-            rollLog('Perform initialization first.');
-            return;
-        }
-        rollLog('start logout ...');
-        chatClient
-            .logout()
-            .then(() => {
-                rollLog('logout success.');
-            })
-            .catch(reason => {
-                rollLog('logout fail:' + JSON.stringify(reason));
-            });
-    };
-
-    const creategroup = async () => {
-        // console.log(groupName)
-        // console.log(groupDescription)
-        if (this.isInitialized === false || this.isInitialized === undefined) {
-            rollLog('Perform initialization first.');
-            return;
-        }
-        const callback = new (class {
-            onSuccess(response) {
-                rollLog('Group chat created successfully. Group ID: ' + response.groupId);
-            }
-
-            onError(error) {
-                rollLog('Error creating group chat: ' + JSON.stringify(error));
-            }
-        })();
-        const options = new ChatGroupOptions({
-            style: 0,
-            maxCount: 100,
-            inviteNeedConfirm: true,
-            ext: 'custom extension data',
-            isDisabled: false,
-        })
-
-        let group = await chatClient.groupManager.createGroup(
-            options,
-            groupName,
-            groupDescription,
-            ["rida1234sahd", "laiba5362gsdgh"],
-            'Join this awesome group'
-        ).then((response) => {
-            callback.onSuccess(response)
-            console.log("Group created successfully:", response.groupId);
-        })
-            .catch((error) => {
-                callback.onError(error);
-            });
-        await checkLoginStatus();
-        return group;
-    }
-
-    //get group from server 
-    const getgroup = async () => {
-        console.log("Inside get group")
-        let group = await chatClient.groupManager.fetchGroupInfoFromServer(
-            groupId,
-            false
-        )
-        console.log(group)
-        return group;
-    }
-
-    //Add group Members 
-    const addgroupmembers = async () => {
-        await chatClient.groupManager.addMembers(
-            groupId,
-            ["rida1234sahd", "user1", "user2", "user12"],
-            "Welcome to the group"
-        )
-            .then(() => {
-                console.log("Members successfully added to the group.");
-            })
-            .catch((error) => {
-                console.error("Failed to add members to the group:", error);
-            });
-
-    }
-
-    // Get Joined Groups
-    const getjoinedgroups = async () => {
-        groups = await chatClient.groupManager.getJoinedGroups()
-        setJoinedGroups(groups);
-        console.log(joinedGroups)
-        return groups;
-    }
 
     // Renders the UI.
     return (
@@ -284,10 +72,14 @@ const GroupChat = ({ navigation }) => {
                     />
                 </View>
                 <View style={styles.buttonCon}>
-                    <Text style={styles.eachBtn} onPress={login}>
+                    <Text style={styles.eachBtn}
+                        onPress={() => login(isInitialized, chatClient, username, chatToken)}
+                    >
                         SIGN IN
                     </Text>
-                    <Text style={styles.eachBtn} onPress={logout}>
+                    <Text style={styles.eachBtn}
+                        onPress={() => logout(isInitialized, chatClient)}
+                    >
                         SIGN OUT
                     </Text>
                 </View>
@@ -310,12 +102,16 @@ const GroupChat = ({ navigation }) => {
                     />
                 </View>
                 <View style={styles.buttonCon}>
-                    <Text className="mb-2" style={styles.btn2} onPress={creategroup}>
+                    <Text className="mb-2" style={styles.btn2}
+                    onPress={()=>creategroup(isInitialized, chatClient, groupName, groupDescription)}
+                    >
                         Create Group
                     </Text>
                 </View>
                 <View style={styles.buttonCon}>
-                    <Text className="mb-2" style={styles.btn2} onPress={getjoinedgroups}>
+                    <Text className="mb-2" style={styles.btn2} 
+                    onPress={ ()=> addgroupmembers(chatClient, groupId)}
+                    >
                         Add new members to the group
                     </Text>
                 </View>
@@ -323,7 +119,7 @@ const GroupChat = ({ navigation }) => {
                     className="rounded-lg w-40 px-4 py-2 bg-blue-500"
                     title="See All Groups"
                     onPress={async () => {
-                        const groups = await getjoinedgroups();
+                        const groups = await getjoinedgroups(chatClient);
                         navigation.navigate('ShowGroup', { joinedGroups: groups });
                     }}
                     style={{ marginTop: 20 }}
@@ -387,13 +183,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         backgroundColor: '#6200ED',
         borderRadius: 5,
-    },
-    logText: {
-        padding: 10,
-        marginTop: 10,
-        color: '#ccc',
-        fontSize: 14,
-        lineHeight: 20,
-    },
+    }
 });
 export default GroupChat;

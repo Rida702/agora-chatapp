@@ -36,6 +36,7 @@ const GroupDetails = () => {
       {/* Header Section */}
       <View className="bg-blue-200 p-4">
         <Text className="text-xl font-bold">{groupName}</Text>
+        <Text className="text-xl font-bold">{groupId}</Text>
       </View>
 
       {/* Chat List */}
