@@ -14,10 +14,12 @@ import {
     ChatGroupOptions,
     ChatGroupManager
 } from 'react-native-agora-chat';
+import { Button } from 'react-native';
+import ShowGroup from './ShowGroup'
 
 
 // Defines the App object.
-const App = () => {
+const GroupChat = ({ navigation }) => {
     // Defines the variable.
     const title = 'AgoraChatQuickstart';
     // Replaces <your appKey> with your app key.
@@ -32,7 +34,8 @@ const App = () => {
     const [groupName, setGroupName] = React.useState(null);
     const [groupDescription, setGroupDescription] = React.useState(null);
     const [groupId, setGroupId] = React.useState('260632179965954');
-    const [user, setUser] = React.useState(null);
+    const [joinedGroups, setJoinedGroups] = React.useState([]);
+
     const [logText, setWarnText] = React.useState('Show log area');
     const chatClient = ChatClient.getInstance();
     const chatManager = chatClient.chatManager;
@@ -130,7 +133,7 @@ const App = () => {
                 const user_name = await chatClient.getCurrentUsername();
                 console.log("Username:", user_name);
                 setUsername(user_name)
-                return user_name;  
+                return user_name;
             } else {
                 console.log("User is not logged in.");
                 return null;
@@ -140,7 +143,7 @@ const App = () => {
             return null;
         }
     };
-    
+
 
     // Logs in with an account ID and a token.
     const login = async () => {
@@ -149,18 +152,18 @@ const App = () => {
             return;
         }
         rollLog('start login ...');
-    
+
         try {
             await chatClient.loginWithAgoraToken(username, chatToken);
             rollLog('login operation success.');
-    
+
             // Call the separate function to check the login status
             await checkLoginStatus();
         } catch (reason) {
             rollLog('login fail: ' + JSON.stringify(reason));
         }
     };
-    
+
 
     // Logs out from server.
     const logout = () => {
@@ -188,13 +191,13 @@ const App = () => {
         }
         const callback = new (class {
             onSuccess(response) {
-              rollLog('Group chat created successfully. Group ID: ' + response.groupId);
+                rollLog('Group chat created successfully. Group ID: ' + response.groupId);
             }
-        
+
             onError(error) {
-              rollLog('Error creating group chat: ' + JSON.stringify(error));
+                rollLog('Error creating group chat: ' + JSON.stringify(error));
             }
-          })();
+        })();
         const options = new ChatGroupOptions({
             style: 0,
             maxCount: 100,
@@ -202,19 +205,20 @@ const App = () => {
             ext: 'custom extension data',
             isDisabled: false,
         })
-        
+
         let group = await chatClient.groupManager.createGroup(
             options,
             groupName,
             groupDescription,
             ["rida1234sahd", "laiba5362gsdgh"],
             'Join this awesome group'
-        ).then(() => {
-            console.log("Group created successfully:", group);
+        ).then((response) => {
+            callback.onSuccess(response)
+            console.log("Group created successfully:", response.groupId);
         })
-        .catch((error) => {
-            callback.onError(error);
-        });
+            .catch((error) => {
+                callback.onError(error);
+            });
         await checkLoginStatus();
         return group;
     }
@@ -229,7 +233,7 @@ const App = () => {
         console.log(group)
         return group;
     }
-    
+
     //Add group Members 
     const addgroupmembers = async () => {
         await chatClient.groupManager.addMembers(
@@ -237,13 +241,21 @@ const App = () => {
             ["rida1234sahd", "user1", "user2", "user12"],
             "Welcome to the group"
         )
-        .then(() => {
-            console.log("Members successfully added to the group.");
-        })
-        .catch((error) => {
-            console.error("Failed to add members to the group:", error);
-        });
-        
+            .then(() => {
+                console.log("Members successfully added to the group.");
+            })
+            .catch((error) => {
+                console.error("Failed to add members to the group:", error);
+            });
+
+    }
+
+    // Get Joined Groups
+    const getjoinedgroups = async () => {
+        groups = await chatClient.groupManager.getJoinedGroups()
+        setJoinedGroups(groups);
+        console.log(joinedGroups)
+        return groups;
     }
 
     // Renders the UI.
@@ -298,16 +310,24 @@ const App = () => {
                     />
                 </View>
                 <View style={styles.buttonCon}>
-                    <Text style={styles.btn2} onPress={creategroup}>
+                    <Text className="mb-2" style={styles.btn2} onPress={creategroup}>
                         Create Group
                     </Text>
                 </View>
                 <View style={styles.buttonCon}>
-                    <Text style={styles.btn2} onPress={addgroupmembers}>
+                    <Text className="mb-2" style={styles.btn2} onPress={getjoinedgroups}>
                         Add new members to the group
                     </Text>
                 </View>
-
+                <Button
+                    className="rounded-lg w-40 px-4 py-2 bg-blue-500"
+                    title="See All Groups"
+                    onPress={async () => {
+                        const groups = await getjoinedgroups();
+                        navigation.navigate('ShowGroup', { joinedGroups: groups });
+                    }}
+                    style={{ marginTop: 20 }}
+                />
             </ScrollView>
         </SafeAreaView>
     );
@@ -376,4 +396,4 @@ const styles = StyleSheet.create({
         lineHeight: 20,
     },
 });
-export default App;
+export default GroupChat;

@@ -1,13 +1,18 @@
 import React from 'react';
 import { SafeAreaView, Text } from 'react-native';
+import { AgoraProvider } from './context/AgoraContext';
 
-const App = ({navigation}) => {
+const App = ({ navigation }) => {
   return (
-    <SafeAreaView>
-      <Text>Src Directory Hello, React Native!</Text>
-      <Button title="Go to Profile" onPress={() => navigation.navigate('Profile')} />
+    <>
+      <AgoraProvider>
+        <SafeAreaView>
+          <Text>Src Directory Hello, React Native!</Text>
+          <Button title="Go to Profile" onPress={() => navigation.navigate('Profile')} />
 
-    </SafeAreaView>
+        </SafeAreaView>
+      </AgoraProvider>
+    </>
   );
 };
 
