@@ -8,13 +8,12 @@ const ShowGroup = () => {
   const { joinedGroups } = route.params;
 
   const handleItemPress = (group) => {
-    // Navigate to another screen or perform any action
     navigation.navigate('GroupDetails', { groupId: group.groupId, groupName: group.groupName });
   };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity onPress={() => handleItemPress(item)}>
-      <View className="p-4 border-b border-gray-300">
+      <View className="bg-blue-500 mb-4 p-2 rounded-lg ml-3 mr-3">
         <Text className="font-bold text-lg">{item.groupName}</Text>
         <Text className="text-gray-600 mt-1">{item.description}</Text>
       </View>
@@ -23,7 +22,7 @@ const ShowGroup = () => {
 
   const renderHeader = () => (
     <View className="items-center p-4 bg-black-200">
-      <Text className="text-2xl font-bold">Your Groups</Text>
+      <Text className="text-3xl font-bold mb-4">Your Groups</Text>
     </View>
   );
 

@@ -1,5 +1,5 @@
 // Imports dependencies.
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
     SafeAreaView,
     ScrollView,
@@ -12,44 +12,27 @@ import { Button } from 'react-native';
 //To initialize Agora SDK
 import AgoraContext from '../context/AgoraContext';
 //Authorize User
-import { login, logout } from '../agora/authAgora';
+import { login, logout, getaccesstoken } from '../agora/authAgora';
 //To handle group related functions
 import { creategroup, getjoinedgroups, getCurrentUsername, addgroupmembers } from '../agora/groupManager';
 
 
 const GroupChat = ({ navigation }) => {
     const { chatClient, isInitialized } = useContext(AgoraContext);
-    const title = 'AgoraChatQuickstart';
+    const title = 'Group Chat App';
     const [username, setUsername] = React.useState('rida1234sahd');
-    const [chatToken, setChatToken] = React.useState('007eJxTYHjkIB/ZFa3Fu/9go1ymdT/r21UcbvVXLgbyPTtUzbK/S1aBIdHQ0MLI0tg4KS3RyMQ8zcjCyMLYKDEx0dDcNMnMwMKkfPf/tIZARgaxR6KsjAysDIxACOKrMJgmJRqZGSQb6FoYWJrrGhqmpukmWSRa6lqaJpmbmpuZplimpQAAk1olNg==')
+    // const [chatToken, setChatToken] = React.useState('')
+    const [chatToken, setChatToken] = React.useState('007eJxTYPh6pPPIJaM3/aaLlrqWpO1zU6p6sd7Q5qjlx+1f/sd1boxTYEg0NLQwsjQ2TkpLNDIxTzOyMLIwNkpMTDQ0N00yM7Aw8Z7CnN4QyMgQyvWfhZGBlYERCEF8FQbTpEQjM4NkA10LA0tzXUPD1DTdJItES11L0yRzU3Mz0xTLtBQARYgoiQ==')
     //Set Group name and group description
     const [groupName, setGroupName] = React.useState(null);
     const [groupDescription, setGroupDescription] = React.useState(null);
 
     const [groupId, setGroupId] = React.useState('260632179965954');
 
-    //Check for current user login status
-    const checkLoginStatus = async () => {
-        try {
-            if (await chatClient.isLoginBefore()) {
-                const user_name = await chatClient.getCurrentUsername();
-                console.log("Username:", user_name);
-                setUsername(user_name)
-                return user_name;
-            } else {
-                console.log("User is not logged in.");
-                return null;
-            }
-        } catch (error) {
-            console.error("Error checking login status:", error);
-            return null;
-        }
-    };
-
     // Renders the UI.
     return (
         <SafeAreaView>
-            <View style={styles.titleContainer}>
+            <View className="bg-blue-500" style={styles.titleContainer}>
                 <Text style={styles.title}>{title}</Text>
             </View>
             <ScrollView>
@@ -62,22 +45,13 @@ const GroupChat = ({ navigation }) => {
                         value={username}
                     />
                 </View>
-                <View style={styles.inputCon}>
-                    <TextInput
-                        multiline
-                        style={styles.inputBox}
-                        placeholder="Enter chatToken"
-                        onChangeText={text => setChatToken(text)}
-                        value={chatToken}
-                    />
-                </View>
                 <View style={styles.buttonCon}>
-                    <Text style={styles.eachBtn}
+                    <Text className="bg-blue-500" style={styles.eachBtn}
                         onPress={() => login(isInitialized, chatClient, username, chatToken)}
                     >
                         SIGN IN
                     </Text>
-                    <Text style={styles.eachBtn}
+                    <Text className="bg-blue-500" style={styles.eachBtn}
                         onPress={() => logout(isInitialized, chatClient)}
                     >
                         SIGN OUT
@@ -102,28 +76,22 @@ const GroupChat = ({ navigation }) => {
                     />
                 </View>
                 <View style={styles.buttonCon}>
-                    <Text className="mb-2" style={styles.btn2}
+                    <Text className="mb-2 bg-blue-500" style={styles.btn2}
                     onPress={()=>creategroup(isInitialized, chatClient, groupName, groupDescription)}
                     >
                         Create Group
                     </Text>
                 </View>
                 <View style={styles.buttonCon}>
-                    <Text className="mb-2" style={styles.btn2} 
-                    onPress={ ()=> addgroupmembers(chatClient, groupId)}
-                    >
-                        Add new members to the group
-                    </Text>
-                </View>
-                <Button
-                    className="rounded-lg w-40 px-4 py-2 bg-blue-500"
-                    title="See All Groups"
+                    <Text className="mt-7 mb-10 bg-blue-500" style={styles.btn2} 
                     onPress={async () => {
                         const groups = await getjoinedgroups(chatClient);
                         navigation.navigate('ShowGroup', { joinedGroups: groups });
                     }}
-                    style={{ marginTop: 20 }}
-                />
+                    >
+                        See All Groups
+                    </Text>
+                </View>
             </ScrollView>
         </SafeAreaView>
     );
@@ -132,7 +100,7 @@ const GroupChat = ({ navigation }) => {
 const styles = StyleSheet.create({
     titleContainer: {
         height: 60,
-        backgroundColor: '#6200ED',
+        // backgroundColor: '#6200ED',
     },
     title: {
         lineHeight: 60,
@@ -171,7 +139,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#fff',
         fontSize: 16,
-        backgroundColor: '#6200ED',
+        // backgroundColor: '#6200ED',
         borderRadius: 5,
     },
     btn2: {
@@ -181,7 +149,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#fff',
         fontSize: 16,
-        backgroundColor: '#6200ED',
+        // backgroundColor: '#6200ED',
         borderRadius: 5,
     }
 });

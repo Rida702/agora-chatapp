@@ -11,6 +11,7 @@ import GroupChat from './src/screens/GroupChat';
 import ShowGroup from './src/screens/ShowGroup';
 import GroupDetails from './src/screens/GroupDetails';
 import { AgoraProvider } from './src/context/AgoraContext';
+import GroupInfo from './src/screens/GroupInfo';
 
 const Stack = createStackNavigator();
 
@@ -19,8 +20,9 @@ const App = () => {
     <AgoraProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home"
+          initialRouteName="GroupChat"
           screenOptions={{
+            headerShown: false,
             headerStyle: {
               backgroundColor: '#000',
             },
@@ -28,11 +30,12 @@ const App = () => {
             cardStyle: { backgroundColor: '#121212' },
           }}
         >
+          <Stack.Screen name="GroupChat" component={GroupChat} />
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="OneToOneChat" component={OnetoOnechat} />
-          <Stack.Screen name="GroupChat" component={GroupChat} />
           <Stack.Screen name="ShowGroup" component={ShowGroup} />
           <Stack.Screen name="GroupDetails" component={GroupDetails} />
+          <Stack.Screen name="GroupInfo" component={GroupInfo} />
         </Stack.Navigator>
       </NavigationContainer>
     </AgoraProvider>

@@ -1,43 +1,77 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TextInput, TouchableOpacity, Button } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { sendmsg, receivemessages, getmessage } from '../agora/groupManager';
+import { sendmsg, receivemessages, getmessage, getGroupInfo } from '../agora/groupManager';
 import AgoraContext from '../context/AgoraContext';
+import { getusername } from '../agora/authAgora'
 
-const GroupDetails = () => {
+const GroupDetails = ({ navigation }) => {
   const { chatClient, isInitialized } = useContext(AgoraContext);
   const route = useRoute();
   const { groupId, groupName } = route.params;
 
+  const [message, setMessage] = useState('');
   const [chats, setChats] = useState([]);
+  const [messageSent, setMessageSent] = useState(false);
+  const [username, setUsername] = useState('');
+
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const messages = await receivemessages(isInitialized, chatClient, groupId);
-        setChats(messages);
-      } catch (error) {
-        console.error('Error fetching messages:', error);
-      }
-    };
-    fetchMessages();
-  }, [isInitialized, chatClient, groupId]);
+    receivemessages(isInitialized, chatClient, groupId)
+      .then(updatedMessages => {
+        setChats(updatedMessages);
+      })
+      .catch(error => {
+        console.log('Error fetching messages:', error);
+      });
+    chatClient.getCurrentUsername()
+      .then(Username => {
+        setUsername(Username);
+      })
+      .catch(error => {
+        console.log('Error fetching messages:', error);
+      });
+
+  }, [messageSent]);
+
+  const handleSendMessage = async () => {
+    await sendmsg(isInitialized, chatClient, groupId, message)
+      .then(() => {
+        setMessage('');
+        setMessageSent(prev => !prev);
+      })
+      .catch(error => {
+        console.log('Error sending message:', error);
+      });
+  };
 
   const renderChatItem = ({ item }) => (
-    <View className="p-4 border-b border-blue-300">
-      <Text className="text-blue-300 font-bold">{item.sender}</Text>
-      <Text className="text-white-600 text-sm">{item.message}</Text>
+    <View
+      className={`p-2 border-b rounded-2xl max-w-xs mb-4 ${item.sender === username ? 'bg-blue-600 self-end mr-4' : 'bg-green-500 self-start ml-4'
+        }`}
+    >
+      <Text className="text-white font-bold">{item.sender}</Text>
+      <Text className="text-white">{item.message}</Text>
     </View>
-  );
 
-  const [message, setMessage] = React.useState('');
+  );
 
   return (
     <View className="flex-1">
       {/* Header Section */}
-      <View className="bg-blue-600 p-4">
-        <Text className="text-xl font-bold">Group Name: {groupName}</Text>
-        <Text className="text-xl font-bold">Group ID: {groupId}</Text>
+      <View className="bg-dark p-4">
+        <View className="flex-row justify-between items-center p-4">
+          <Text className="text-2xl font-bold">{groupName}</Text>
+          <TouchableOpacity
+            className="ml-2 bg-blue-500 p-3 rounded-full"
+            // onPress={() => getGroupInfo(isInitialized, chatClient, groupId)}
+            onPress={async () => {
+              navigation.navigate('GroupInfo', { groupId: groupId, groupName: groupName });
+            }}
+          >
+            <Text className="text-white">Group Info</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Chat List */}
@@ -49,23 +83,16 @@ const GroupDetails = () => {
       />
 
       {/* Input Section */}
-      <View className="flex-row items-center p-4 border-t border-blue-300 bg-dark">
+      <View className="flex-row items-center p-4 border-t border-0 bg-dark">
         <TextInput
           className="flex-1 border rounded-full p-2 border-gray-300"
           placeholder="Type your message..."
           onChangeText={text => setMessage(text)}
           value={message}
         />
-        <TouchableOpacity
+        <TouchableOpacity uchableOpacity
           className="ml-2 bg-blue-500 p-2 rounded-full"
-          onPress={() => {
-            sendmsg(isInitialized, chatClient, groupId, message).then(() => {
-              receivemessages(isInitialized, chatClient, groupId).then(updatedMessages => {
-              setChats(updatedMessages);
-              });
-              setMessage('');
-            });
-          }}
+          onPress={handleSendMessage}
         >
           <Text className="text-white">Send</Text>
         </TouchableOpacity>

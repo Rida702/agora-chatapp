@@ -192,3 +192,32 @@
         }
     ]
 }
+
+{
+    "adminList": [],
+    "announcement": "",
+    "blockList": [],
+    "description": "Testing",
+    "groupId": "260632179965954",
+    "groupName": "Testing",
+    "isAllMemberMuted": false,
+    "memberCount": 6,
+    "memberList": [
+        "laiba5362gsdgh",
+        "user1",
+        "user12",
+        "user2",
+        "user3"
+    ],
+    "messageBlocked": false,
+    "muteList": [],
+    "options": {
+        "ext": "",
+        "inviteNeedConfirm": false,
+        "isDisabled": false,
+        "maxCount": 200,
+        "style": 2
+    },
+    "owner": "rida1234sahd",
+    "permissionType": 2
+}

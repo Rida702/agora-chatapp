@@ -10,6 +10,7 @@ export const AgoraProvider = ({ children }) => {
   const [chatManager, setChatManager] = useState(null);
   const [groupManager, setGroupManager] = useState(null);
   const [isInitialized, setIsInitialized] = useState(false);
+
   const appKey = '411216339#1407114'; 
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export const AgoraProvider = ({ children }) => {
       setChatClient(client);
       setIsInitialized(true);
       const chatmanager = client.chatManager;
-      const groupmanager = client.ChatGroupManager;
+      const groupmanager = client.ChatGroupManager;      
       setChatManager(chatmanager);
       setGroupManager(groupmanager);
     };
