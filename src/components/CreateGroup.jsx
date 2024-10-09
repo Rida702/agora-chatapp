@@ -1,18 +1,14 @@
-import React, { useContext, useState } from 'react';
-import {
-    Text,
-    TextInput,
-    View,
-    TouchableOpacity,
-    Alert
-} from 'react-native';
+import React, { useContext, useState, useRef } from 'react';
+import { View, TextInput, TouchableOpacity, Text, Image, Alert } from 'react-native';
+import RBSheet from 'react-native-raw-bottom-sheet';
 import { creategroup, getjoinedgroups } from '../agora/groupManager';
 import AgoraContext from '../context/AgoraContext';
 
 const CreateGroup = ({ updateGroups }) => {
-    const { chatClient, isInitialized } = useContext(AgoraContext)
+    const { chatClient, isInitialized } = useContext(AgoraContext);
     const [groupName, setGroupName] = useState('');
     const [groupDescription, setGroupDescription] = useState('');
+    const refRBSheet = useRef();
 
     const handleCreateGroup = async () => {
         if (!groupName.trim()) {
@@ -21,12 +17,12 @@ const CreateGroup = ({ updateGroups }) => {
         }
         try {
             const group = await creategroup(isInitialized, chatClient, groupName, groupDescription);
-
             const updatedGroups = await getjoinedgroups(isInitialized, chatClient);
             updateGroups(updatedGroups);
 
             setGroupName('');
             setGroupDescription('');
+            refRBSheet.current.close(); // Close the bottom sheet after group creation
         } catch (error) {
             console.error('Error creating group:', error);
             Alert.alert('Error', 'Failed to create group. Please try again.');
@@ -34,27 +30,60 @@ const CreateGroup = ({ updateGroups }) => {
     };
 
     return (
-
-        <View className="p-4">
-            <TextInput
-                className="border border-gray-300 rounded-lg p-2 mb-4"
-                placeholder="Group Name"
-                value={groupName}
-                onChangeText={text => setGroupName(text)}
-            />
-            <TextInput
-                className="border border-gray-300 rounded-lg p-2 mb-4"
-                placeholder="Group Description"
-                value={groupDescription}
-                onChangeText={text => setGroupDescription(text)}
-            />
+        <>
             <TouchableOpacity
-                className="bg-white px-4 py-2 rounded-lg w-32 self-center"
-                onPress={handleCreateGroup}
+                className="w-full items-end mb-3 mt-5 px-4"
+                onPress={() => refRBSheet.current.open()}
             >
-                <Text className="text-blue-500 text-center">Create Group</Text>
+                <Image
+                    source={require('../../assets/icons/plus.png')}
+                    resizeMode="contain"
+                    className="w-6 h-6"
+                />
             </TouchableOpacity>
-        </View>
+
+            <RBSheet
+                ref={refRBSheet}
+                useNativeDriver={false}
+                height={200}
+                customStyles={{
+                    wrapper: {
+                        backgroundColor: 'transparent',
+                    },
+                    container: {
+                        backgroundColor: '#428bc9',
+                    },
+                    draggableIcon: {
+                        backgroundColor: '#000',
+                    },
+                }}
+                customModalProps={{
+                    animationType: 'slide',
+                    statusBarTranslucent: true,
+                }}
+            >
+                <View className="p-4">
+                    <TextInput
+                        className="border border-gray-300 rounded-lg p-2 mb-4"
+                        placeholder="Group Name"
+                        value={groupName}
+                        onChangeText={text => setGroupName(text)}
+                    />
+                    <TextInput
+                        className="border border-gray-300 rounded-lg p-2 mb-4"
+                        placeholder="Group Description"
+                        value={groupDescription}
+                        onChangeText={text => setGroupDescription(text)}
+                    />
+                    <TouchableOpacity
+                        className="bg-white px-4 py-2 rounded-lg w-32 self-center"
+                        onPress={handleCreateGroup}
+                    >
+                        <Text className="text-blue-500 text-center">Create Group</Text>
+                    </TouchableOpacity>
+                </View>
+            </RBSheet>
+        </>
     );
 };
 

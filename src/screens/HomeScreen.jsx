@@ -1,27 +1,15 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import {
-    SafeAreaView,
-    Text,
-    TextInput,
-    View,
-    ActivityIndicator,
-    TouchableOpacity,
-    Image,
-    KeyboardAvoidingView,
-    Platform
-} from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { SafeAreaView, Text, View, ActivityIndicator, TextInput } from 'react-native';
 import AgoraContext from '../context/AgoraContext';
 import ShowGroup from '../components/ShowGroup';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import CreateGroup from '../components/CreateGroup';
 import { getjoinedgroups } from '../agora/groupManager';
+import CreateGroup from '../components/CreateGroup';
 
-const HomeScreen = ( ) => {
+const HomeScreen = () => {
     const { chatClient, isInitialized } = useContext(AgoraContext);
     const [joinedGroups, setJoinedGroups] = useState([]);
     const [loading, setLoading] = useState(true);
     const [query, setQuery] = useState('');
-    const refRBSheet = useRef();
 
     useEffect(() => {
         const fetchJoinedGroups = async () => {
@@ -40,42 +28,10 @@ const HomeScreen = ( ) => {
         setJoinedGroups(newGroups);
     };
 
-
-
     return (
+
         <SafeAreaView className="flex-1 bg-black">
-            <TouchableOpacity
-                className="w-full items-end mb-3 mt-5 px-4"
-                onPress={() => refRBSheet.current.open()}
-            >
-                <Image source={require('../../assets/icons/plus.png')}
-                    resizeMode="contain" className="w-6 h-6" />
-            </TouchableOpacity>
-
-            {/* Bottom sheet for group creation */}
-            <RBSheet
-                ref={refRBSheet}
-                useNativeDriver={false}
-                height={200}
-                customStyles={{
-                    wrapper: {
-                        backgroundColor: 'transparent',
-                    },
-                    container: {
-                        backgroundColor: '#428bc9',
-                    },
-                    draggableIcon: {
-                        backgroundColor: '#000',
-                    },
-                }}
-                customModalProps={{
-                    animationType: 'slide',
-                    statusBarTranslucent: true,
-                }}
-            >
             <CreateGroup updateGroups={updateGroups} />
-            </RBSheet>
-
             <View className="p-3 bg-black">
                 <Text className="text-3xl font-bold text-white border-0">Groups</Text>
             </View>
@@ -96,7 +52,7 @@ const HomeScreen = ( ) => {
                 </View>
             ) : (
                 <ShowGroup joinedGroups={joinedGroups} query={query} />
-            )}
+            )}            
         </SafeAreaView>
     );
 };
