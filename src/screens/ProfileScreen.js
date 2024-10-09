@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import LogoutButton from '../components/LogoutButton';
+import { View } from 'react-native';
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = () => {
+
   return (
-    <View>
-      <Text>Profile Screen</Text>
-      <Button title="Go back" onPress={() => navigation.goBack()} />
+    <View className="bg-black">
+      <LogoutButton/>
     </View>
   );
 };

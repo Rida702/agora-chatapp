@@ -11,7 +11,7 @@ const GroupInfo = () => {
     const route = useRoute();
     const { groupId, groupName } = route.params;
     const [groupInfo, setGroupInfo] = useState(null);
-    const [user, setUser] = useState("");
+    const [user, setUser] = useState([]);
     const [refreshing, setRefreshing] = useState(false); 
     
     const fetchGroupInfo = async () => {
@@ -38,7 +38,7 @@ const GroupInfo = () => {
 
         if (type === 'admin') {
             options = [
-                { text: 'Remove Admin', onPress: () => removemember(isInitialized, chatClient, groupId, member) },
+                // { text: 'Remove Admin', onPress: () => removemember(isInitialized, chatClient, groupId, member) },
                 { text: 'Block', onPress: () => blockmembers(isInitialized, chatClient, groupId, member) },
                 { text: 'Mute', onPress: () => mutemembers(isInitialized, chatClient, groupId, member) },
                 { text: 'Cancel', style: 'cancel' },
@@ -47,7 +47,7 @@ const GroupInfo = () => {
             options = [
                 { text: 'Make Admin', onPress: () => makeadmin(isInitialized, chatClient, groupId, member) },
                 { text: 'Block', onPress: () => blockmembers(isInitialized, chatClient, groupId, member) },
-                { text: 'Remove', onPress: () => removemember(isInitialized, chatClient, groupId, member) },
+                // { text: 'Remove', onPress: () => removemember(isInitialized, chatClient, groupId, member) },
                 { text: 'Mute', onPress: () => mutemembers(isInitialized, chatClient, groupId, member) },
                 { text: 'Cancel', style: 'cancel' },
             ];

@@ -12,7 +12,6 @@ export const AgoraProvider = ({ children }) => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const appKey = '411216339#1407114'; 
-
   useEffect(() => {
     // Function to initialize Agora SDK
     const initAgora = async () => {

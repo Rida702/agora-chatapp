@@ -7,6 +7,7 @@ import {
     Text,
     TextInput,
     View,
+    TouchableOpacity,
 } from 'react-native';
 import { Button } from 'react-native';
 //To initialize Agora SDK
@@ -45,18 +46,25 @@ const GroupChat = ({ navigation }) => {
                         value={username}
                     />
                 </View>
-                <View style={styles.buttonCon}>
-                    <Text className="bg-blue-500" style={styles.eachBtn}
-                        onPress={() => login(isInitialized, chatClient, username, chatToken)}
-                    >
-                        SIGN IN
-                    </Text>
-                    <Text className="bg-blue-500" style={styles.eachBtn}
-                        onPress={() => logout(isInitialized, chatClient)}
-                    >
-                        SIGN OUT
-                    </Text>
+                <View style={styles.inputCon}>
+                    <TextInput
+                        multiline
+                        style={styles.inputBox}
+                        placeholder="Enter Token"
+                        onChangeText={text => setChatToken(text)}
+                        value={chatToken}
+                    />
                 </View>
+                <View style={styles.buttonCon}>
+                    <TouchableOpacity className="bg-blue-500" style={styles.eachBtn} onPress={() => login(isInitialized, chatClient, username, chatToken)}>
+                        <Text className="text-center mt-2 font-bold text-white" style={styles.buttonText}>SIGN IN</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity className="bg-blue-500" style={styles.eachBtn} onPress={() => logout(isInitialized, chatClient)}>
+                        <Text className="text-center mt-2 font-bold text-white" style={styles.buttonText}>SIGN OUT</Text>
+                    </TouchableOpacity>
+                </View>
+
                 <View style={styles.inputCon}>
                     <TextInput
                         multiline
@@ -75,22 +83,21 @@ const GroupChat = ({ navigation }) => {
                         value={groupDescription}
                     />
                 </View>
-                <View style={styles.buttonCon}>
-                    <Text className="mb-2 bg-blue-500" style={styles.btn2}
-                    onPress={()=>creategroup(isInitialized, chatClient, groupName, groupDescription)}
-                    >
-                        Create Group
-                    </Text>
+                <View className="mb-3" style={styles.buttonCon}>
+                    <TouchableOpacity className="bg-blue-500" style={styles.eachBtn}
+                        onPress={() => creategroup(isInitialized, chatClient, groupName, groupDescription)} >
+                        <Text className="text-center mt-2 font-bold text-white" style={styles.buttonText}>Create Group</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={styles.buttonCon}>
-                    <Text className="mt-7 mb-10 bg-blue-500" style={styles.btn2} 
-                    onPress={async () => {
-                        const groups = await getjoinedgroups(chatClient);
-                        navigation.navigate('ShowGroup', { joinedGroups: groups });
-                    }}
+                <View className="mt-3" style={styles.buttonCon}>
+                    <TouchableOpacity className="mt-7 mb-10 bg-blue-500" style={styles.eachBtn}
+                        onPress={async () => {
+                            const groups = await getjoinedgroups(chatClient);
+                            navigation.navigate('ShowGroup', { joinedGroups: groups });
+                        }}
                     >
-                        See All Groups
-                    </Text>
+                        <Text className="text-center mt-2 font-bold text-white" style={styles.buttonText}>See All Groups</Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </SafeAreaView>

@@ -1,32 +1,56 @@
+import { Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export const login = async (isInitialized, chatClient, username, chatToken) => {
-  if (isInitialized === false || isInitialized === undefined) {
-    console.log('Perform initialization first.')
-    return;
+  if (!isInitialized) {
+    const message = 'Perform initialization first.';
+    console.log(message);
+    Alert.alert('Login Error', message);
+    return false;  // Return false if initialization failed
   }
-  console.log('start login ...')
-  chatClient
-    .loginWithAgoraToken(username, chatToken)
-    .then(() => {
-      console.log('login operation success.')
-    })
-    .catch(reason => {
-      console.log('login fail: ' + JSON.stringify(reason))
-    });
+
+  try {
+    console.log('start login ...');
+    await chatClient.loginWithAgoraToken(username, chatToken);  
+    const successMessage = 'Login operation successful.';
+    console.log(successMessage);
+    // Alert.alert('Login Success', successMessage);
+    await AsyncStorage.setItem('username', username);
+    await AsyncStorage.setItem('chatToken', chatToken);
+    await AsyncStorage.setItem('isLoggedIn', 'true');
+    return true;  
+  } catch (error) {
+    const errorMessage = 'Login failed: ' + JSON.stringify(error);
+    console.log(errorMessage);
+    Alert.alert('Login Failed', errorMessage);
+    return false; 
+  }
 };
+
+
 
 export const logout = async (isInitialized, chatClient) => {
   if (isInitialized === false || isInitialized === undefined) {
-    console.log('Perform initialization first.')
+    const message = 'Perform initialization first.';
+    console.log(message);
+    Alert.alert('Logout Error', message);
     return;
   }
-  console.log('start logout ...')
+
+  console.log('start logout ...');
+  // Alert.alert('Logout', 'Starting logout operation...');
+
   await chatClient
     .logout()
     .then(() => {
-      console.log('logout success.')
+      const successMessage = 'Logout operation successful.';
+      console.log(successMessage);
+      Alert.alert('Logout Success', successMessage);
     })
     .catch(reason => {
-      console.log('logout fail:' + JSON.stringify(reason))
+      const errorMessage = 'Logout failed: ' + JSON.stringify(reason);
+      console.log(errorMessage);
+      Alert.alert('Logout Error', errorMessage);
     });
 };
 
