@@ -11,14 +11,13 @@ import {
 } from 'react-native-agora-chat';
 
 import { Alert } from 'react-native';
-// import {registerMessageEventListeners} from './eventListener'
 
 //Get current user
 export const getusername = async (chatClient) => {
     const user_name = await chatClient.getCurrentUsername();
     console.log("Username:", user_name);
     return user_name;
-  };
+};
 
 //Add Admin for a group
 export const makeadmin = async (isInitialized, chatClient, groupId, admin) => {
@@ -27,27 +26,27 @@ export const makeadmin = async (isInitialized, chatClient, groupId, admin) => {
         console.log(message);
         Alert.alert('Login Error', message);
         return;
-      }
-    return await chatClient.groupManager.addAdmin(groupId,admin)
-    .then(() => {
-        console.log("Admin Created Successfully")
-    })
-    .catch((error) => {
-        console.log("Error while creating admin")
-    });
+    }
+    return await chatClient.groupManager.addAdmin(groupId, admin)
+        .then(() => {
+            console.log("Admin Created Successfully")
+        })
+        .catch((error) => {
+            console.log("Error while creating admin")
+        });
 }
 
 export const registerAdminAddedListener = (chatClient) => {
     const groupListener = {
         onAdminAdded: ({ admin, groupId }) => {
-        console.log(`Admin with ID: ${admin} has been added to group: ${groupId}`);
+            console.log(`Admin with ID: ${admin} has been added to group: ${groupId}`);
         },
         onMemberJoined: ({ member, groupId }) => {
-        console.log(`Member with ID: ${member} has joined group: ${groupId}`);
+            console.log(`Member with ID: ${member} has joined group: ${groupId}`);
         },
-  };
-  chatClient.groupManager.addGroupListener(groupListener)
-}  
+    };
+    chatClient.groupManager.addGroupListener(groupListener)
+}
 
 export const registerMessageListener = (chatClient, groupId, setChats) => {
     chatClient.chatManager.addMessageListener({
@@ -71,7 +70,7 @@ export const registerMessageListener = (chatClient, groupId, setChats) => {
 
 //create a new group 
 export const creategroup = async (isInitialized, chatClient, groupName, groupDescription) => {
-    
+
     if (isInitialized === false || isInitialized === undefined) {
         const message = 'Perform initialization first.';
         console.log(message);
@@ -113,13 +112,13 @@ export const creategroup = async (isInitialized, chatClient, groupName, groupDes
         ["user1", "laiba5362gsdgh"], //users  are not adding to the group
         'Join this awesome group'
     )
-    .then((response) => {
-        callback.onSuccess(response);
-        console.log("Group created successfully:", response.groupId);
-    })
-    .catch((error) => {
-        callback.onError(error);
-    });
+        .then((response) => {
+            callback.onSuccess(response);
+            console.log("Group created successfully:", response.groupId);
+        })
+        .catch((error) => {
+            callback.onError(error);
+        });
 
     return group;
 };
@@ -170,20 +169,20 @@ export const addgroupmembers = async (isInitialized, chatClient, groupId, member
         member,
         "Welcome to the group"
     )
-    .then(() => {
-        console.log("Members successfully added to the group.");
-        Alert.alert('Success', 'Members successfully added to the group.');
-    })
-    .catch((error) => {
-        console.error("Failed to add members to the group:", error);
-        Alert.alert('Error', `Failed to add members to the group: ${error.message}`);
-    });
+        .then(() => {
+            console.log("Members successfully added to the group.");
+            Alert.alert('Success', 'Members successfully added to the group.');
+        })
+        .catch((error) => {
+            console.error("Failed to add members to the group:", error);
+            Alert.alert('Error', `Failed to add members to the group: ${error.message}`);
+        });
 }
 
 
 // Get Joined Groups
-export const getjoinedgroups = async (isInitialized,chatClient) => {
-    if ((isInitialized === false || isInitialized === undefined) && chatClient!==undefined) {
+export const getjoinedgroups = async (isInitialized, chatClient) => {
+    if ((isInitialized === false || isInitialized === undefined) && chatClient !== undefined) {
         console.log('Perform initialization first.');
         Alert.alert('Error', 'Perform initialization first.');
         return;
@@ -193,6 +192,78 @@ export const getjoinedgroups = async (isInitialized,chatClient) => {
     return groups;
 }
 
+//Receive Message from server
+export const createMessage = async (targetId) => {
+    const messageType = ChatMessageType.TXT;
+    const chatType = ChatMessageChatType.GroupChat;
+    let msg;
+    if (messageType === ChatMessageType.TXT) {
+        const content = "This is text message";
+        msg = ChatMessage.createTextMessage(targetId, content, chatType);
+    } else if (messageType === ChatMessageType.IMAGE) {
+        const filePath = "/data/.../image.jpg";
+        const width = 100;
+        const height = 100;
+        const displayName = "test.jpg";
+        msg = ChatMessage.createImageMessage(targetId, filePath, chatType, {
+            displayName,
+            width,
+            height,
+        });
+    } else if (messageType === ChatMessageType.CMD) {
+        const action = "writing";
+        msg = ChatMessage.createCmdMessage(targetId, action, chatType);
+    } else if (messageType === ChatMessageType.CUSTOM) {
+        const event = "gift";
+        const ext = { key: "value" };
+        msg = ChatMessage.createCustomMessage(targetId, event, chatType, {
+            params: JSON.stringify(ext),
+        });
+    } else if (messageType === ChatMessageType.FILE) {
+        const filePath = "data/.../foo.zip";
+        const displayName = "study_data.zip";
+        msg = ChatMessage.createFileMessage(targetId, filePath, chatType, {
+            displayName,
+        });
+    } else if (messageType === ChatMessageType.LOCATION) {
+        const latitude = "114.78";
+        const longitude = "39,89";
+        const address = "darwin";
+        msg = ChatMessage.createLocationMessage(
+            targetId,
+            latitude,
+            longitude,
+            chatType,
+            { address }
+        );
+    } else if (messageType === ChatMessageType.VIDEO) {
+        const filePath = "data/.../foo.mp4";
+        const width = 100;
+        const height = 100;
+        const displayName = "bar.mp4";
+        const thumbnailLocalPath = "data/.../zoo.jpg";
+        const duration = 5;
+        msg = ChatMessage.createVideoMessage(targetId, filePath, chatType, {
+            displayName,
+            thumbnailLocalPath,
+            duration,
+            width,
+            height,
+        });
+    } else if (messageType === ChatMessageType.VOICE) {
+        const filePath = "data/.../foo.wav";
+        const displayName = "bar.mp4";
+        const duration = 5;
+        msg = ChatMessage.createVoiceMessage(targetId, filePath, chatType, {
+            displayName,
+            duration,
+        });
+    } else {
+        throw new Error("Not implemented.");
+    }
+};
+
+//Send Message to server
 export const sendmsg = async (isInitialized, chatClient, targetId, content) => {
     if (isInitialized === false || isInitialized === undefined) {
         console.log('Perform initialization first.');  // Changed rollLog to console.log for consistency
@@ -202,7 +273,6 @@ export const sendmsg = async (isInitialized, chatClient, targetId, content) => {
     const messageType = ChatMessageType.TXT;
     let msg;
 
-    // Create the message based on its type
     if (messageType === ChatMessageType.TXT) {
         msg = ChatMessage.createTextMessage(
             targetId,
@@ -234,22 +304,21 @@ export const sendmsg = async (isInitialized, chatClient, targetId, content) => {
     };
 
     return await chatClient.chatManager
-        .sendMessage(msg, callback)  
+        .sendMessage(msg, callback)
         .then(() => {
             console.log('Send message: ' + msg.localMsgId);
             const result = {
-                id: msg.localMsgId,  
-                message: msg.body.content,    
-                sender: msg.from      
+                id: msg.localMsgId,
+                message: msg.body.content,
+                sender: msg.from
             };
             console.log(result)
-            return result; 
+            return result;
         })
         .catch(reason => {
             console.log('Send fail: ' + JSON.stringify(reason));
         });
 };
-
 
 
 /*
@@ -288,10 +357,10 @@ export const receivemessages = async (isInitialized, chatClient, targetId) => {
     return await chatClient.chatManager
         .fetchHistoryMessages(targetId, ChatConversationType.GroupChat, params)
         .then((response) => {
-            callback.onSuccess("HERE IS: ",response);
+            callback.onSuccess("HERE IS: ", response);
             const chatData = response.list.map(message => ({
-                id: message.msgId,           
-                sender: message.from,    
+                id: message.msgId,
+                sender: message.from,
                 message: message.body.content
             }));
 
@@ -317,27 +386,27 @@ export const getGroupInfo = async (isInitialized, chatClient, groupId) => {
             console.log('Error receiving Group Info : ' + JSON.stringify(error));
         }
     })();
-    return await chatClient.groupManager.fetchGroupInfoFromServer(groupId,true)
-    .then((response) => {
-        callback.onSuccess(response);
-        const groupInfo = {
-            adminList: response.adminList,
-            blockList: response.blockList,
-            groupId: response.groupId,
-            description: response.description,
-            groupName: response.groupName,
-            memberCount: response.memberCount,
-            memberList: response.memberList,
-            muteList: response.muteList,
-            owner: response.owner,
-        };
-        console.log(groupInfo)
-        return groupInfo;
-    })
-    .catch((error) => {
-        callback.onError(error);
-        return [];
-    });
+    return await chatClient.groupManager.fetchGroupInfoFromServer(groupId, true)
+        .then((response) => {
+            callback.onSuccess(response);
+            const groupInfo = {
+                adminList: response.adminList,
+                blockList: response.blockList,
+                groupId: response.groupId,
+                description: response.description,
+                groupName: response.groupName,
+                memberCount: response.memberCount,
+                memberList: response.memberList,
+                muteList: response.muteList,
+                owner: response.owner,
+            };
+            console.log(groupInfo)
+            return groupInfo;
+        })
+        .catch((error) => {
+            callback.onError(error);
+            return [];
+        });
 }
 
 //removeMembers(groupId: string, members: string[]): Promise<void>
@@ -365,7 +434,7 @@ export const blockmembers = async (isInitialized, chatClient, groupId, members) 
         return;
     }
     try {
-        
+
         await chatClient.groupManager.blockMembers(groupId, members);
         console.log("Members successfully blocked from the group.");
         Alert.alert('Success', "Members successfully blocked from the group.");

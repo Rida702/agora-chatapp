@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, FlatList, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, TextInput, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { sendmsg, receivemessages, registerMessageListener } from '../agora/groupManager';
 
 import AgoraContext from '../context/AgoraContext';
+import ImagePicker from 'react-native-image-crop-picker';
+import UploadFiles from '../components/UploadFiles';
 
 const GroupDetails = ({ navigation }) => {
   const { chatClient, isInitialized } = useContext(AgoraContext);
@@ -26,15 +28,26 @@ const GroupDetails = ({ navigation }) => {
     return () => {
       chatClient.chatManager.removeMessageListener(messageListener);
     };
-    
+
   }, []);
 
   const handleSendMessage = async () => {
-      const msg = await sendmsg(isInitialized, chatClient, groupId, message);
-      console.log('Group Received Message: ', msg);
-      setChats(prevChats => [...prevChats, msg]); 
-      setMessage('');
+    const msg = await sendmsg(isInitialized, chatClient, groupId, message);
+    console.log('Group Received Message: ', msg);
+    setChats(prevChats => [...prevChats, msg]);
+    setMessage('');
   };
+
+  const pickImage = async () => {
+    await ImagePicker.openPicker({
+      multiple: true,
+      width: 300,
+      height: 400,
+      cropping: true
+    }).then(image => {
+      console.log(image);
+    });
+  }
 
 
   const renderChatItem = ({ item }) => (
@@ -78,11 +91,28 @@ const GroupDetails = ({ navigation }) => {
           onChangeText={text => setMessage(text)}
           value={message}
         />
-        <TouchableOpacity uchableOpacity
+        <UploadFiles/>
+        {/* <TouchableOpacity
           className="ml-2 bg-blue-500 p-2 rounded-full"
+          // onPress={pickImage}
+        >
+          <Image source={require('../../assets/icons/attach-file.png')}
+            resizeMode="contain" className="w-6 h-6" />
+        </TouchableOpacity> */}
+
+        <TouchableOpacity
+          className="ml-2 bg-blue-500 p-2 rounded-full"
+        // onPress={sendVoiceMessage}
+        >
+          <Image source={require('../../assets/icons/voice-message.png')}
+            resizeMode="contain" className="w-6 h-6" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          className="ml-2 bg-blue-500 p-2.5 rounded-full"
           onPress={handleSendMessage}
         >
-          <Text className="text-white">Send</Text>
+          <Text className="text-black">Send</Text>
         </TouchableOpacity>
       </View>
 
