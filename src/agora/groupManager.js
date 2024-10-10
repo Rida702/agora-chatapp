@@ -49,6 +49,26 @@ export const registerAdminAddedListener = (chatClient) => {
   chatClient.groupManager.addGroupListener(groupListener)
 }  
 
+export const registerMessageListener = (chatClient, groupId, setChats) => {
+    chatClient.chatManager.addMessageListener({
+        onMessagesReceived: (messages) => {
+            console.log('Received messages from admin:', messages);
+
+            messages.forEach(message => {
+                if (message.conversationId === groupId) {
+                    setChats(prevChats => [...prevChats, {
+                        id: message.msgId,
+                        message: message.body.content,
+                        sender: message.from
+                    }]);
+                }
+            });
+        }
+    });
+};
+
+
+
 //create a new group 
 export const creategroup = async (isInitialized, chatClient, groupName, groupDescription) => {
     

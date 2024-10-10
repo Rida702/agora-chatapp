@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, FlatList, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { sendmsg, receivemessages } from '../agora/groupManager';
+import { sendmsg, receivemessages, registerMessageListener } from '../agora/groupManager';
 
 import AgoraContext from '../context/AgoraContext';
 
@@ -21,6 +21,12 @@ const GroupDetails = ({ navigation }) => {
   useEffect(() => {
     fetchMessages();
     chatClient.getCurrentUsername().then(setUsername).catch(console.log);
+
+    const messageListener = registerMessageListener(chatClient, groupId, setChats);
+    return () => {
+      chatClient.chatManager.removeMessageListener(messageListener);
+    };
+    
   }, []);
 
   const handleSendMessage = async () => {
