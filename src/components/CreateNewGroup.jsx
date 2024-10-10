@@ -3,12 +3,15 @@ import { View, TextInput, TouchableOpacity, Text, Image, Alert } from 'react-nat
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { creategroup, getjoinedgroups } from '../agora/groupManager';
 import AgoraContext from '../context/AgoraContext';
+import { KeyboardAvoidingView, Platform } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const CreateGroup = ({ updateGroups }) => {
     const { chatClient, isInitialized } = useContext(AgoraContext);
     const [groupName, setGroupName] = useState('');
     const [groupDescription, setGroupDescription] = useState('');
     const refRBSheet = useRef();
+    const navigation = useNavigation();  
 
     const handleCreateGroup = async () => {
         if (!groupName.trim()) {
@@ -45,7 +48,7 @@ const CreateGroup = ({ updateGroups }) => {
             <RBSheet
                 ref={refRBSheet}
                 useNativeDriver={false}
-                height={200}
+                height={120}
                 customStyles={{
                     wrapper: {
                         backgroundColor: 'transparent',
@@ -61,27 +64,36 @@ const CreateGroup = ({ updateGroups }) => {
                     animationType: 'slide',
                     statusBarTranslucent: true,
                 }}
+                customAvoidingViewProps={{
+                    enabled: true,
+                  }}
             >
-                <View className="p-4">
-                    <TextInput
-                        className="border border-gray-300 rounded-lg p-2 mb-4"
-                        placeholder="Group Name"
-                        value={groupName}
-                        onChangeText={text => setGroupName(text)}
-                    />
-                    <TextInput
-                        className="border border-gray-300 rounded-lg p-2 mb-4"
-                        placeholder="Group Description"
-                        value={groupDescription}
-                        onChangeText={text => setGroupDescription(text)}
-                    />
-                    <TouchableOpacity
-                        className="bg-white px-4 py-2 rounded-lg w-32 self-center"
-                        onPress={handleCreateGroup}
-                    >
-                        <Text className="text-blue-500 text-center">Create Group</Text>
-                    </TouchableOpacity>
-                </View>
+                {/* <KeyboardAvoidingView
+                    behavior={Platform.OS === 'android' ? 'height' : 'padding'} 
+                    style={{ flex: 1 }}
+                > */}
+                    <View className="p-4">
+                        {/* <TextInput
+                            className="border border-gray-300 rounded-lg p-2 mb-4"
+                            placeholder="Group Name"
+                            value={groupName}
+                            onChangeText={text => setGroupName(text)}
+                        />
+                        <TextInput
+                            className="border border-gray-300 rounded-lg p-2 mb-4"
+                            placeholder="Group Description"
+                            value={groupDescription}
+                            onChangeText={text => setGroupDescription(text)}
+                        /> */}
+                        <TouchableOpacity
+                            className="bg-white px-4 py-2 mt-4 rounded-lg w-32 self-center"
+                            // onPress={handleCreateGroup}
+                            onPress={() => navigation.navigate('CreateGroup', { updateGroups: updateGroups })} 
+                        >
+                            <Text className="text-blue-500 text-center">Create Group</Text>
+                        </TouchableOpacity>
+                    </View>
+                {/* </KeyboardAvoidingView> */}
             </RBSheet>
         </>
     );

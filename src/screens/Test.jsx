@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, FlatList, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { sendmsg, receivemessages } from '../agora/groupManager';
-
 import AgoraContext from '../context/AgoraContext';
 
 const GroupDetails = ({ navigation }) => {
@@ -12,22 +11,41 @@ const GroupDetails = ({ navigation }) => {
   const [message, setMessage] = useState('');
   const [chats, setChats] = useState([]);
   const [username, setUsername] = useState('');
-
-  const fetchMessages = async () => {
-    const updatedMessages = await receivemessages(isInitialized, chatClient, groupId);
-    setChats(updatedMessages);
-  };
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const fetchMessages = async () => {
+      setLoading(true);
+      try {
+        const updatedMessages = await receivemessages(isInitialized, chatClient, groupId);
+        setChats(prev => [
+          ...prev.filter(chat => !chat.temporary),
+          ...updatedMessages.filter(msg => !prev.some(chat => chat.id === msg.id)),
+        ]);
+      } catch (error) {
+        console.log('Error fetching messages:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchMessages();
     chatClient.getCurrentUsername().then(setUsername).catch(console.log);
   }, []);
 
   const handleSendMessage = async () => {
-      const msg = await sendmsg(isInitialized, chatClient, groupId, message);
-      console.log('Group Received Message: ', msg);
-      setChats(prevChats => [...prevChats, msg]); 
+    if (!message.trim()) return;
+
+    const tempId = Date.now().toString();
+    const newMessage = { id: tempId, sender: username, message, temporary: true };
+    setChats(prev => [...prev, newMessage]);
+
+    try {
+      await sendmsg(isInitialized, chatClient, groupId, message);
       setMessage('');
+    } catch (error) {
+      console.log('Error sending message:', error);
+    }
   };
 
 
@@ -57,12 +75,20 @@ const GroupDetails = ({ navigation }) => {
         </View>
       </View>
 
-      <FlatList
-        data={chats}
-        renderItem={renderChatItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingBottom: 80 }}
-      />
+      {loading ? (
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" color="#0000ff" />
+          <Text className="mt-4 text-white">Loading chat...</Text>
+        </View>
+      ) : (
+
+        <FlatList
+          data={chats}
+          renderItem={renderChatItem}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingBottom: 80 }}
+        />
+      )}
 
       {/* Input Section */}
       <View className="flex-row items-center p-4 border-t border-0 bg-dark">

@@ -4,7 +4,7 @@ import { useRoute } from '@react-navigation/native';
 import { getGroupInfo } from '../agora/groupManager';
 import AgoraContext from '../context/AgoraContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { makeadmin, addgroupmembers, removemember, blockmembers, mutemembers, unblockmembers, unmutemembers, leavegroup } from '../agora/groupManager';
+import { makeadmin, addgroupmembers, registerAdminAddedListener, blockmembers, mutemembers, unblockmembers, unmutemembers, leavegroup } from '../agora/groupManager';
 
 const GroupInfo = () => {
     const { chatClient, isInitialized } = useContext(AgoraContext);
@@ -30,6 +30,7 @@ const GroupInfo = () => {
     };
 
     useEffect(() => {
+        registerAdminAddedListener(chatClient);
         fetchGroupInfo();
     }, [isInitialized, chatClient, groupId]);
 
@@ -45,7 +46,14 @@ const GroupInfo = () => {
             ];
         } else if (type === 'member') {
             options = [
-                { text: 'Make Admin', onPress: () => makeadmin(isInitialized, chatClient, groupId, member) },
+                {
+                    text: 'Make Admin',
+                    onPress: () => {   
+                        registerAdminAddedListener(chatClient);               
+                        makeadmin(isInitialized, chatClient, groupId, member);              
+                    }
+                  },
+                  
                 { text: 'Block', onPress: () => blockmembers(isInitialized, chatClient, groupId, member) },
                 // { text: 'Remove', onPress: () => removemember(isInitialized, chatClient, groupId, member) },
                 { text: 'Mute', onPress: () => mutemembers(isInitialized, chatClient, groupId, member) },

@@ -3,7 +3,8 @@ import { SafeAreaView, Text, View, ActivityIndicator, TextInput } from 'react-na
 import AgoraContext from '../context/AgoraContext';
 import ShowGroup from '../components/ShowGroup';
 import { getjoinedgroups } from '../agora/groupManager';
-import CreateGroup from '../components/CreateGroup';
+import CreateNewGroup from '../components/CreateNewGroup'
+
 
 const HomeScreen = () => {
     const { chatClient, isInitialized } = useContext(AgoraContext);
@@ -31,7 +32,7 @@ const HomeScreen = () => {
     return (
 
         <SafeAreaView className="flex-1 bg-black">
-            <CreateGroup updateGroups={updateGroups} />
+            <CreateNewGroup updateGroups={updateGroups} />
             <View className="p-3 bg-black">
                 <Text className="text-3xl font-bold text-white border-0">Groups</Text>
             </View>

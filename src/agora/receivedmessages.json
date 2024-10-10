@@ -221,3 +221,56 @@
     "owner": "rida1234sahd",
     "permissionType": 2
 }
+
+
+Chats: [
+    {
+        "id": "1335723158681947766",
+        "message": "V dcr",
+        "sender": "user1"
+    },
+    {
+        "id": "1335723171252276854",
+        "message": "Hyhygt",
+        "sender": "user1"
+    },
+    {
+        "id": "1335723182065192566",
+        "message": "Bgbtyh",
+        "sender": "user1"
+    }
+]
+
+Message sent successfully: {
+    "attributes": {},
+    "body": {
+        "content": "Hh", //this
+        "lastModifyOperatorId": undefined,
+        "lastModifyTime": undefined,
+        "modifyCount": undefined,
+        "targetLanguageCodes": [],
+        "translations": {},
+        "type": "txt"
+    },
+    "chatType": 1,
+    "conversationId": "261267050790915",
+    "deliverOnlineOnly": false,
+    "direction": "send",
+    "from": "user1",  //this
+    "groupAckCount": 0,
+    "hasDeliverAck": false,
+    "hasRead": true,
+    "hasReadAck": false,
+    "isBroadcast": false,
+    "isChatThread": false,
+    "isContentReplaced": false,
+    "isOnline": true,
+    "localMsgId": "1728562175891",
+    "localTime": 1728562175891,
+    "msgId": "1335723559112154742", //this
+    "needGroupAck": false,
+    "receiverList": undefined,
+    "serverTime": 1728562176043,
+    "status": 2,
+    "to": "261267050790915"
+}

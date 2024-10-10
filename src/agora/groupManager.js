@@ -3,11 +3,15 @@ import {
     ChatMessage,
     ChatManager,
     ChatMessageChatType,
+    ChatMessageType,
     ChatConversationType,
-    ChatSearchDirection
+    ChatSearchDirection,
+    ChatGroupEventListener
+
 } from 'react-native-agora-chat';
 
 import { Alert } from 'react-native';
+// import {registerMessageEventListeners} from './eventListener'
 
 //Get current user
 export const getusername = async (chatClient) => {
@@ -17,7 +21,6 @@ export const getusername = async (chatClient) => {
   };
 
 //Add Admin for a group
-//Make the person who created the group Admin by default
 export const makeadmin = async (isInitialized, chatClient, groupId, admin) => {
     if (isInitialized === false || isInitialized === undefined) {
         const message = 'Perform initialization first.';
@@ -34,6 +37,17 @@ export const makeadmin = async (isInitialized, chatClient, groupId, admin) => {
     });
 }
 
+export const registerAdminAddedListener = (chatClient) => {
+    const groupListener = {
+        onAdminAdded: ({ admin, groupId }) => {
+        console.log(`Admin with ID: ${admin} has been added to group: ${groupId}`);
+        },
+        onMemberJoined: ({ member, groupId }) => {
+        console.log(`Member with ID: ${member} has joined group: ${groupId}`);
+        },
+  };
+  chatClient.groupManager.addGroupListener(groupListener)
+}  
 
 //create a new group 
 export const creategroup = async (isInitialized, chatClient, groupName, groupDescription) => {
@@ -76,7 +90,7 @@ export const creategroup = async (isInitialized, chatClient, groupName, groupDes
         options,
         groupName,
         groupDescription,
-        ["rida1234sahd", "laiba5362gsdgh"],
+        ["user1", "laiba5362gsdgh"], //users  are not adding to the group
         'Join this awesome group'
     )
     .then((response) => {
@@ -159,42 +173,64 @@ export const getjoinedgroups = async (isInitialized,chatClient) => {
     return groups;
 }
 
-//Send Message to group chat
-//ChatMessageChatType: 1(Group Chat)
-//target id --> group id in case of group chat
-//content --> The text content
 export const sendmsg = async (isInitialized, chatClient, targetId, content) => {
     if (isInitialized === false || isInitialized === undefined) {
-        rollLog('Perform initialization first.');
+        console.log('Perform initialization first.');  // Changed rollLog to console.log for consistency
         return;
     }
-    let msg = ChatMessage.createTextMessage(
-        targetId,
-        content,
-        ChatMessageChatType.GroupChat,
-    );
-    console.log(targetId)
-    const callback = new (class {
-        onProgress(locaMsgId, progress) {
-            console.log(`send message process: ${locaMsgId}, ${progress}`)
+
+    const messageType = ChatMessageType.TXT;
+    let msg;
+
+    // Create the message based on its type
+    if (messageType === ChatMessageType.TXT) {
+        msg = ChatMessage.createTextMessage(
+            targetId,
+            content,
+            ChatMessageChatType.GroupChat
+        );
+    } else if (messageType === ChatMessageType.IMAGE) {
+        const filePath = "/data/.../image.jpg";
+        const width = 100;
+        const height = 100;
+        const displayName = "test.jpg";
+        msg = ChatMessage.createImageMessage(targetId, filePath, ChatMessageChatType.GroupChat, {
+            displayName,
+            width,
+            height,
+        });
+    }
+
+    const callback = {
+        onProgress: (localMsgId, progress) => {
+            console.log(`Sending message with ID ${localMsgId}: ${progress}% complete.`);
+        },
+        onError: (localMsgId, error) => {
+            console.log(`Error sending message with ID ${localMsgId}:`, error);
+        },
+        onSuccess: (message) => {
+            console.log(`Message sent successfully:`, message);
         }
-        onError(locaMsgId, error) {
-            console.log(`send message fail: ${locaMsgId}, ${JSON.stringify(error)}`)
-        }
-        onSuccess(message) {
-            console.log('send message success: ' + message.localMsgId)
-        }
-    })();
-    console.log('start send message ...')
-    await chatClient.chatManager
-        .sendMessage(msg, callback)
+    };
+
+    return await chatClient.chatManager
+        .sendMessage(msg, callback)  
         .then(() => {
-            console.log('send message: ' + msg.localMsgId)
+            console.log('Send message: ' + msg.localMsgId);
+            const result = {
+                id: msg.localMsgId,  
+                message: msg.body.content,    
+                sender: msg.from      
+            };
+            console.log(result)
+            return result; 
         })
         .catch(reason => {
-            console.log('send fail: ' + JSON.stringify(reason))
+            console.log('Send fail: ' + JSON.stringify(reason));
         });
 };
+
+
 
 /*
 //Get the content of a message from message ID
@@ -215,7 +251,6 @@ export const receivemessages = async (isInitialized, chatClient, targetId) => {
         rollLog('Perform initialization first.');
         return;
     }
-
     const callback = new (class {
         onSuccess() {
             console.log('Messages Received Successfully, Group ID: ' + targetId);
@@ -233,7 +268,7 @@ export const receivemessages = async (isInitialized, chatClient, targetId) => {
     return await chatClient.chatManager
         .fetchHistoryMessages(targetId, ChatConversationType.GroupChat, params)
         .then((response) => {
-            callback.onSuccess(response);
+            callback.onSuccess("HERE IS: ",response);
             const chatData = response.list.map(message => ({
                 id: message.msgId,           
                 sender: message.from,    
@@ -310,6 +345,7 @@ export const blockmembers = async (isInitialized, chatClient, groupId, members) 
         return;
     }
     try {
+        
         await chatClient.groupManager.blockMembers(groupId, members);
         console.log("Members successfully blocked from the group.");
         Alert.alert('Success', "Members successfully blocked from the group.");
@@ -403,11 +439,6 @@ export const leavegroup = async (isInitialized, chatClient, groupId) => {
         Alert.alert('Error', `Failed to leave group: ${error.message}`);
     }
 }
-
-
-//changeGroupDescription(groupId: string, description: string): Promise<void>
-//changeGroupName(groupId: string, groupName: string): Promise<void>
-//changeOwner(groupId: string, newOwner: string): Promise<void>
 
 
 

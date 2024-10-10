@@ -11,7 +11,10 @@ import GroupDetails from './src/screens/GroupDetails';
 import LoginScreen from './src/screens/LoginScreen';
 import ProfileScreen from './src/screens/ProfileScreen'; 
 import SplashScreen from './src/screens/SplashScreen'
-import CreateGroup from './src/components/CreateGroup';
+import CreateGroup from './src/screens/CreateGroup';
+import CreateNewGroup from './src/components/CreateNewGroup'
+import GroupInfo from './src/screens/GroupInfo';
+
 
 import { AgoraProvider } from './src/context/AgoraContext';
 
@@ -90,9 +93,10 @@ const App = () => {
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="HomeScreen" component={HomeTabs} />
           <Stack.Screen name="CreateGroup" component={CreateGroup} />
+          <Stack.Screen name="CreateNewGroup" component={CreateNewGroup} />
           <Stack.Screen name="ShowGroup" component={ShowGroup} />
           <Stack.Screen name="GroupDetails" component={GroupDetails} />
-          {/* <Stack.Screen name="GroupInfo" component={GroupInfo} /> */}
+          <Stack.Screen name="GroupInfo" component={GroupInfo} />
         </Stack.Navigator>
       </NavigationContainer>
     </AgoraProvider>

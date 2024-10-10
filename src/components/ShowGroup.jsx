@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 
 const ShowGroup = ({ joinedGroups, query }) => {
-  const route = useRoute(); 
-  const navigation = useNavigation();
-  
+  const navigation = useNavigation();  
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

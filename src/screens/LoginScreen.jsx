@@ -17,8 +17,8 @@ import { login, logout } from '../agora/authAgora';
 const LoginScreen = ({ navigation }) => {
     const { chatClient, isInitialized } = useContext(AgoraContext);
     const title = 'Group Chat App';
-    const [username, setUsername] = React.useState('rida1234sahd');
-    const [chatToken, setChatToken] = React.useState('007eJxTYJCQnLBvxw3ZEzWBIsy1qR2yPzq+aLwJvP6CUTX2w+TZXvIKDImGhhZGlsbGSWmJRibmaUYWRhbGRomJiYbmpklmBhYmDwPY0hsCGRlWyNewMDKwMjACIYivwmCalGhkZpBsoGthYGmua2iYmqabZJFoqWtpmmRuam5mmmKZlgIA1o0lcQ==')
+    const [username, setUsername] = React.useState('user1');
+    const [chatToken, setChatToken] = React.useState('007eJxTYOi8fb7Wcn2SmlfNmZz5MZrVxqYNgru1DA/F1PiYnfR4+EmBIdHQ0MLI0tg4KS3RyMQ8zcjCyMLYKDEx0dDcNMnMwMIk4QhbekMgI0P+r0NMjAysDIxACOKrMBinWhglmhgb6FoYWpjoGhqmpulapBgl6RqbG6YlJSemmponGQMA7cQmLQ==')
 
     const handleLogin = async () => {
         const success = await login(isInitialized, chatClient, username, chatToken);
