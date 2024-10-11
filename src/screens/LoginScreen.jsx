@@ -18,7 +18,7 @@ const LoginScreen = ({ navigation }) => {
     const { chatClient, isInitialized } = useContext(AgoraContext);
     const title = 'Group Chat App';
     const [username, setUsername] = React.useState('user1');
-    const [chatToken, setChatToken] = React.useState('007eJxTYOi8fb7Wcn2SmlfNmZz5MZrVxqYNgru1DA/F1PiYnfR4+EmBIdHQ0MLI0tg4KS3RyMQ8zcjCyMLYKDEx0dDcNMnMwMIk4QhbekMgI0P+r0NMjAysDIxACOKrMBinWhglmhgb6FoYWpjoGhqmpulapBgl6RqbG6YlJSemmponGQMA7cQmLQ==')
+    const [chatToken, setChatToken] = React.useState('007eJxTYPguLL3LSGPBe5O0/F+setN+hqpdVP37QlD/63LeCMlVFfMUGBINDS2MLI2Nk9ISjUzM04wsjCyMjRITEw3NTZPMDCxMVm7jSG8IZGQoM9zExMjAysAIhCC+CoNxqoVRoomxga6FoYWJrqFhapquRYpRkq6xuWFaUnJiqql5kjEA4/clyQ==')
 
     const handleLogin = async () => {
         const success = await login(isInitialized, chatClient, username, chatToken);
