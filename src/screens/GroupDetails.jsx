@@ -4,19 +4,23 @@ import { useRoute } from '@react-navigation/native';
 import { sendmsg, receivemessages, registerMessageListener } from '../agora/groupManager';
 
 import AgoraContext from '../context/AgoraContext';
-import ImagePicker from 'react-native-image-crop-picker';
 import UploadFiles from '../components/UploadFiles';
+import { ChatMessageType } from 'react-native-agora-chat';
 
 const GroupDetails = ({ navigation }) => {
   const { chatClient, isInitialized } = useContext(AgoraContext);
   const { groupId, groupName } = useRoute().params;
-
   const [message, setMessage] = useState('');
   const [chats, setChats] = useState([]);
   const [username, setUsername] = useState('');
+  let filePath;
+  let displayName;
+  let width;
+  let height;
 
   const fetchMessages = async () => {
     const updatedMessages = await receivemessages(isInitialized, chatClient, groupId);
+    console.log("CHATS: ", updatedMessages)
     setChats(updatedMessages);
   };
 
@@ -25,41 +29,79 @@ const GroupDetails = ({ navigation }) => {
     chatClient.getCurrentUsername().then(setUsername).catch(console.log);
 
     const messageListener = registerMessageListener(chatClient, groupId, setChats);
+    console.log("messageListener Chats: ", chats)
     return () => {
       chatClient.chatManager.removeMessageListener(messageListener);
     };
 
-  }, []);
+  }, [filePath, displayName]);
 
-  const handleSendMessage = async () => {
-    const msg = await sendmsg(isInitialized, chatClient, groupId, message);
-    console.log('Group Received Message: ', msg);
-    setChats(prevChats => [...prevChats, msg]);
-    setMessage('');
+  const getUniqueChats = (chats) => {
+    const seenIds = new Set();
+    return chats.filter((chat) => {
+      if (seenIds.has(chat.id)) {
+        return false;
+      }
+      seenIds.add(chat.id);
+      return true;
+    });
   };
 
-  const pickImage = async () => {
-    await ImagePicker.openPicker({
-      multiple: true,
-      width: 300,
-      height: 400,
-      cropping: true
-    }).then(image => {
-      console.log(image);
-    });
+  const setImageData = async (pickedImage) => {
+    filePath = pickedImage.fileUri;
+    displayName = pickedImage.fileName;
+    width = 150;
+    height = 150;
+    await handleSendMessage({ messageType: ChatMessageType.IMAGE });
   }
 
+  const handleSendMessage = async ({ messageType = null }) => {
+    let msg;
+    if (messageType === ChatMessageType.TXT) {
+      msg = await sendmsg({
+        isInitialized, chatClient, groupId, messageType,
+        message
+      });
+      setChats(prevChats => [...prevChats, { id: msg.id, message: msg.message, sender: msg.sender, type: 'txt' }]);
+      setMessage('');
+    } else if (messageType === ChatMessageType.IMAGE) {
+      msg = await sendmsg({
+        isInitialized, chatClient, groupId, messageType,
+        filePath,
+        displayName,
+        width,
+        height,
+      });
+      setChats(prevChats => [...prevChats, { id: msg.id, image: msg.image, sender: msg.sender, type: 'img' }]);
+    }
 
-  const renderChatItem = ({ item }) => (
-    <View
-      className={`p-2 border-b rounded-2xl max-w-xs mb-4 ${item.sender === username ? 'bg-blue-600 self-end mr-4' : 'bg-green-500 self-start ml-4'
-        }`}
-    >
-      <Text className="text-white font-bold">{item.sender}</Text>
-      <Text className="text-white">{item.message}</Text>
-    </View>
+  };
 
-  );
+
+  const renderChatItem = ({ item }) => {
+    return (
+      <View
+        className={`p-2 border-b rounded-2xl max-w-xs mb-4 ${item.sender === username ?
+          item.type !== 'img' ? 'bg-blue-600 self-end mr-4' : 'self-end mr-4' :
+          item.type !== 'img' ? 'bg-green-500 self-start ml-4' : 'self-start ml-4'}`}
+      >
+        <Text className="text-white font-bold text-lg">{item.sender}</Text>
+
+        {/* Conditional rendering based on message type */}
+        {item.type === 'txt' ? (
+          <Text className="text-white">{item.message}</Text>
+        ) : item.type === 'img' && item.image ? (
+          <Image
+            source={{ uri: item.image }}
+            style={{ width: 150, height: 150 }}
+            className="rounded-lg mt-2 bg-blue-400"
+          />
+        ) : null}
+      </View>
+    );
+  };
+
+
 
   return (
     <View className="flex-1">
@@ -77,7 +119,7 @@ const GroupDetails = ({ navigation }) => {
       </View>
 
       <FlatList
-        data={chats}
+        data={getUniqueChats(chats)}
         renderItem={renderChatItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingBottom: 80 }}
@@ -91,14 +133,7 @@ const GroupDetails = ({ navigation }) => {
           onChangeText={text => setMessage(text)}
           value={message}
         />
-        <UploadFiles/>
-        {/* <TouchableOpacity
-          className="ml-2 bg-blue-500 p-2 rounded-full"
-          // onPress={pickImage}
-        >
-          <Image source={require('../../assets/icons/attach-file.png')}
-            resizeMode="contain" className="w-6 h-6" />
-        </TouchableOpacity> */}
+        <UploadFiles setImageData={setImageData} />
 
         <TouchableOpacity
           className="ml-2 bg-blue-500 p-2 rounded-full"
@@ -110,7 +145,7 @@ const GroupDetails = ({ navigation }) => {
 
         <TouchableOpacity
           className="ml-2 bg-blue-500 p-2.5 rounded-full"
-          onPress={handleSendMessage}
+          onPress={() => handleSendMessage({ messageType: ChatMessageType.TXT })}
         >
           <Text className="text-black">Send</Text>
         </TouchableOpacity>
