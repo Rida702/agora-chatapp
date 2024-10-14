@@ -20,7 +20,6 @@ const GroupDetails = ({ navigation }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentlyPlayingId, setCurrentlyPlayingId] = useState(null);
   const [playTime, setPlayTime] = useState('00:00');
-  const [durationVM, setDuration] = useState('00:00');
   const audioRecorderPlayer = useRef(new AudioRecorderPlayer()).current;
   let filePath;
   let displayName;
@@ -112,6 +111,7 @@ const GroupDetails = ({ navigation }) => {
         setPlayTime(audioRecorderPlayer.mmss(Math.floor(e.currentPosition / 1000)));
         if (Math.ceil(e.currentPosition / 1000) === item.duration) {
           setIsPlaying(false);
+          setPlayTime('00:00');
           // console.log("Player Stopped.")
           // console.log("isPlaying",isPlaying)
           audioRecorderPlayer.stopPlayer();
