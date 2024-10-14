@@ -107,7 +107,6 @@ export const registerMessageListener = (chatClient, groupId, setChats) => {
               // Handle image message
               newChatItem = {
                 id: message.localMsgId,
-                message: '',
                 image: message.body.remotePath,
                 displayName: message.body.displayName,
                 width: message.body.width,
@@ -115,7 +114,17 @@ export const registerMessageListener = (chatClient, groupId, setChats) => {
                 sender: message.from,
                 type: 'img'
               };
-            }
+            } else if (message.body.type === 'voice') {
+                // Handle voice message
+                newChatItem = {
+                  id: message.localMsgId,
+                  voice: message.body.remotePath,
+                  displayName: message.body.displayName,
+                  duration: message.body.duration,
+                  sender: message.from,
+                  type: 'voice',
+                };
+              }
   
             setChats(prevChats => [...prevChats, newChatItem]);
           }
@@ -193,6 +202,7 @@ export const sendmsg = async ({
     displayName = '',
     width = 100,
     height = 100,
+    duration=0,
 }) => {
     if (isInitialized === false || isInitialized === undefined) {
         console.log('Perform initialization first.');
@@ -204,8 +214,9 @@ export const sendmsg = async ({
         if (messageType === ChatMessageType.TXT) {
             msg = await createMessage({ groupId, messageType, message });
         } else if (messageType === ChatMessageType.IMAGE) {
-            // console.log("HERE");
             msg = await createMessage({ groupId, messageType, filePath, displayName, width, height });
+        } else if (messageType === ChatMessageType.VOICE) {
+            msg = await createMessage({ groupId, messageType, filePath, displayName, duration });
         }
     } catch (error) {
         console.error("Failed to create message:", error.message);
@@ -234,14 +245,23 @@ export const sendmsg = async ({
                     });
                 } else if (messageType === ChatMessageType.IMAGE) {
                     resolve({
-                        id: msg.localMsgId,
-                        message: '',
+                        id: message.localMsgId,
                         image: message.body.remotePath,  // Use the value from onSuccess
                         displayName: message.body.displayName,
                         width: message.body.width,
                         height: message.body.height,
-                        sender: msg.from,
+                        sender: message.from,
                         type: 'img'
+                    });
+                }
+                else if (messageType === ChatMessageType.VOICE) {
+                    resolve({
+                        id: message.localMsgId,
+                        voice: message.body.remotePath, 
+                        displayName: message.body.displayName,
+                        duration: message.body.duration,
+                        sender: message.from,
+                        type: 'voice'
                     });
                 }
             }
@@ -300,6 +320,15 @@ export const receivemessages = async (isInitialized, chatClient, targetId) => {
                         sender: message.from,
                         image: message.body.remotePath,
                         type: 'img'  
+                    };
+                } else if (message.body.type === 'voice') {
+                    // Handle image message
+                    return {
+                        id: message.msgId,
+                        sender: message.from,
+                        voice: message.body.remotePath,
+                        duration : message.body.duration,
+                        type: 'voice'  
                     };
                 } else {
                     return {
