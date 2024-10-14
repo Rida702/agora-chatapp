@@ -4,7 +4,7 @@ import { useRoute } from '@react-navigation/native';
 import { getGroupInfo } from '../agora/groupManager';
 import AgoraContext from '../context/AgoraContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { makeadmin, addgroupmembers, registerAdminAddedListener, blockmembers, mutemembers, unblockmembers, unmutemembers, leavegroup } from '../agora/groupManager';
+import { makeadmin, addgroupmembers, registerAdminAddedListener, blockmembers, mutemembers, unblockmembers, unmutemembers, leavegroup } from '../agora/groupInfo';
 
 const GroupInfo = () => {
     const { chatClient, isInitialized } = useContext(AgoraContext);

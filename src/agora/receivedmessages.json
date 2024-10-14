@@ -256,7 +256,7 @@ Message sent successfully: {
     "conversationId": "261267050790915",
     "deliverOnlineOnly": false,
     "direction": "send",
-    "from": "user1",  //this
+    "from": "user1", //this
     "groupAckCount": 0,
     "hasDeliverAck": false,
     "hasRead": true,
@@ -273,4 +273,929 @@ Message sent successfully: {
     "serverTime": 1728562176043,
     "status": 2,
     "to": "261267050790915"
+}
+//Image data received
+{
+    "fileName": "IMG-20241009-WA0056.jpg",
+    "fileSize": 160068,
+    "fileType": "image/jpeg",
+    "fileUri": "content://com.android.providers.media.documents/document/image%3A1000054638"
+}
+//message data 
+{
+    "id": "1728629265432",
+    "message": "Hi",
+    "sender": "user1"
+}
+
+Create Message: {
+    "attributes": {},
+    "body": {
+        "displayName": "IMG-20241009-WA0002.jpg",
+        "fileSize": 0,
+        "fileStatus": -1,
+        "height": 100,
+        "lastModifyOperatorId": undefined,
+        "lastModifyTime": undefined,
+        "localPath": "content://com.android.providers.media.documents/document/image%3A1000054467",
+        "modifyCount": undefined,
+        "remotePath": "",
+        "secret": "",
+        "sendOriginalImage": false,
+        "thumbnailLocalPath": "",
+        "thumbnailRemotePath": "",
+        "thumbnailSecret": "",
+        "thumbnailStatus": -1,
+        "type": "img",
+        "width": 100
+    },
+    "chatType": 1,
+    "conversationId": "261264709320706",
+    "deliverOnlineOnly": false,
+    "direction": "send",
+    "from": "user1",
+    "groupAckCount": 0,
+    "hasDeliverAck": false,
+    "hasRead": true,
+    "hasReadAck": false,
+    "isBroadcast": false,
+    "isChatThread": false,
+    "isContentReplaced": false,
+    "isOnline": true,
+    "localMsgId": "1728630234490",
+    "localTime": 1728630234490,
+    "msgId": "172863023449026600",
+    "needGroupAck": false,
+    "receiverList": undefined,
+    "serverTime": 1728630234490,
+    "status": 0,
+    "to": "261264709320706"
+}
+
+Create Message: {
+    "attributes": {},
+    "body": {
+        "content": "Hi",
+        "lastModifyOperatorId": undefined,
+        "lastModifyTime": undefined,
+        "modifyCount": undefined,
+        "targetLanguageCodes": undefined,
+        "translations": undefined,
+        "type": "txt"
+    },
+    "chatType": 1,
+    "conversationId": "261264709320706",
+    "deliverOnlineOnly": false,
+    "direction": "send",
+    "from": "user1",
+    "groupAckCount": 0,
+    "hasDeliverAck": false,
+    "hasRead": true,
+    "hasReadAck": false,
+    "isBroadcast": false,
+    "isChatThread": false,
+    "isContentReplaced": false,
+    "isOnline": true,
+    "localMsgId": "1728630279583",
+    "localTime": 1728630279583,
+    "msgId": "172863027958340711",
+    "needGroupAck": false,
+    "receiverList": undefined,
+    "serverTime": 1728630279583,
+    "status": 0,
+    "to": "261264709320706"
+}
+//Messages received from admin
+Received messages from admin: [
+    {
+        "attributes": {},
+        "body": {
+            "content": "hi",
+            "lastModifyOperatorId": undefined,
+            "lastModifyTime": undefined,
+            "modifyCount": undefined,
+            "targetLanguageCodes": [Array
+            ],
+            "translations": [Object
+            ],
+            "type": "txt"
+        },
+        "chatType": 1,
+        "conversationId": "261267928449025",
+        "deliverOnlineOnly": false,
+        "direction": "rec",
+        "from": "admin",
+        "groupAckCount": 0,
+        "hasDeliverAck": false,
+        "hasRead": false,
+        "hasReadAck": false,
+        "isBroadcast": false,
+        "isChatThread": false,
+        "isContentReplaced": false,
+        "isOnline": true,
+        "localMsgId": "1728632032969",
+        "localTime": 1728632032969,
+        "msgId": "1336023586279788150",
+        "needGroupAck": false,
+        "receiverList": undefined,
+        "serverTime": 1728632031544,
+        "status": 2,
+        "to": "261267928449025"
+    }
+]
+
+Received messages from admin: [
+    {
+        "attributes": {},
+        "body": {
+            "displayName": "texticon.jpg",
+            "fileSize": 0,
+            "fileStatus": -1,
+            "height": 720,
+            "lastModifyOperatorId": undefined,
+            "lastModifyTime": undefined,
+            "localPath": "/storage/emulated/0/Android/data/com.chatapp/411216339#1407114/files/user1/261267928449025/7e224990-87a3-11ef-8b7d-81718220cce4.jpg",
+            "modifyCount": undefined,
+            "remotePath": "http://a41.easemob.com/411216339/1407114/chatfiles/7e224990-87a3-11ef-8b7d-81718220cce4",
+            "secret": "",
+            "sendOriginalImage": false,
+            "thumbnailLocalPath": "/storage/emulated/0/Android/data/com.chatapp/411216339#1407114/files/user1/261267928449025/thumb_7e224990-87a3-11ef-8b7d-81718220cce4",
+            "thumbnailRemotePath": "http://a41.easemob.com/411216339/1407114/chatfiles/7e224990-87a3-11ef-8b7d-81718220cce4",
+            "thumbnailSecret": "",
+            "thumbnailStatus": -1,
+            "type": "img",
+            "width": 480
+        },
+        "chatType": 1,
+        "conversationId": "261267928449025",
+        "deliverOnlineOnly": false,
+        "direction": "rec",
+        "from": "admin",
+        "groupAckCount": 0,
+        "hasDeliverAck": false,
+        "hasRead": false,
+        "hasReadAck": false,
+        "isBroadcast": false,
+        "isChatThread": false,
+        "isContentReplaced": false,
+        "isOnline": true,
+        "localMsgId": "1728632175878",
+        "localTime": 1728632175878,
+        "msgId": "1336024202565652086",
+        "needGroupAck": false,
+        "receiverList": undefined,
+        "serverTime": 1728632175022,
+        "status": 2,
+        "to": "261267928449025"
+    }
+]
+// if (message.body.type === 'txt') {
+//     // Handle text message
+//     newChatItem = {
+//       id: msg.localMsgId,
+//       message: msg.body.content,
+//       sender: msg.from,
+//       type: 'txt'
+//     };
+//   } else if (message.body.type === 'img') {
+//     // Handle image message
+//     newChatItem = {
+//       id: msg.localMsgId,
+//       message: '',
+//       image: msg.body.localPath,
+//       displayName: msg.body.displayName,
+//       width: msg.body.width,
+//       height: msg.body.height,
+//       sender: msg.from,
+//       type: 'img'
+//     };
+//   }
+//IMAGE MESSAGE SENT
+Message sent successfully: {
+    "attributes": {},
+    "body": {
+        "displayName": "image784897270755171129.jpg",
+        "fileSize": 46928,
+        "fileStatus": 0,
+        "height": 390,
+        "lastModifyOperatorId": undefined,
+        "lastModifyTime": undefined,
+        "localPath": "content://com.android.providers.media.documents/document/image%3A1000054638",
+        "modifyCount": undefined,
+        "remotePath": "https://a41.easemob.com/411216339/1407114/chatfiles/be59b710-87ac-11ef-b84d-efd55571db30",
+        "secret": "vloFMIesEe-9_BE7v8oe0AlY_zfB5X_OR2V1ZjfSIAO0PFt2",
+        "sendOriginalImage": false,
+        "thumbnailLocalPath": "",
+        "thumbnailRemotePath": "",
+        "thumbnailSecret": "",
+        "thumbnailStatus": -1,
+        "type": "img",
+        "width": 585
+    },
+    "chatType": 1,
+    "conversationId": "261342773706754",
+    "deliverOnlineOnly": false,
+    "direction": "send",
+    "from": "user1",
+    "groupAckCount": 0,
+    "hasDeliverAck": false,
+    "hasRead": true,
+    "hasReadAck": false,
+    "isBroadcast": false,
+    "isChatThread": false,
+    "isContentReplaced": false,
+    "isOnline": true,
+    "localMsgId": "1728636145530",
+    "localTime": 1728636145530,
+    "msgId": "1336041263257882234",
+    "needGroupAck": false,
+    "receiverList": undefined,
+    "serverTime": 1728636147309,
+    "status": 2,
+    "to": "261342773706754"
+}
+
+CHATS: [
+    {
+        "id": "1336039214822723194",
+        "message": "hiiii 123",
+        "sender": "admin"
+    },
+    {
+        "id": "1336039564849974902",
+        "message": "againnn",
+        "sender": "admin"
+    },
+    {
+        "id": "1336039920132689530",
+        "message": "hi",
+        "sender": "admin"
+    },
+    {
+        "id": "1336040027683032698",
+        "message": undefined,
+        "sender": "admin"
+    },
+    {
+        "id": "1336040061002583674",
+        "message": "Hello",
+        "sender": "user1"
+    },
+    {
+        "id": "1336040256079662714",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336041263257882234",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336041933729959546",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336041962788097658",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336042009533615738",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336042054538497658",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336042160079769206",
+        "message": undefined,
+        "sender": "admin"
+    },
+    {
+        "id": "1336042238756523638",
+        "message": "hi",
+        "sender": "admin"
+    },
+    {
+        "id": "1336042539542646390",
+        "message": "Hi",
+        "sender": "user1"
+    },
+    {
+        "id": "1336042556051426934",
+        "message": "Kese ho",
+        "sender": "user1"
+    },
+    {
+        "id": "1336043124547391094",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336043229270773362",
+        "message": undefined,
+        "sender": "admin"
+    },
+    {
+        "id": "1336043313735667314",
+        "message": "hiii",
+        "sender": "admin"
+    },
+    {
+        "id": "1336043784210746994",
+        "message": "hii",
+        "sender": "admin"
+    },
+    {
+        "id": "1336044006064262770",
+        "message": "hiii",
+        "sender": "admin"
+    }
+]
+//LOGS WHAN A MESSAGE IS RECEIVED
+Received messages from admin: [
+    {
+        "attributes": {},
+        "body": {
+            "content": "Rida123",
+            "lastModifyOperatorId": undefined,
+            "lastModifyTime": undefined,
+            "modifyCount": undefined,
+            "targetLanguageCodes": [Array
+            ],
+            "translations": [Object
+            ],
+            "type": "txt"
+        },
+        "chatType": 1,
+        "conversationId": "261342773706754",
+        "deliverOnlineOnly": false,
+        "direction": "rec",
+        "from": "admin",
+        "groupAckCount": 0,
+        "hasDeliverAck": false,
+        "hasRead": false,
+        "hasReadAck": false,
+        "isBroadcast": false,
+        "isChatThread": false,
+        "isContentReplaced": false,
+        "isOnline": true,
+        "localMsgId": "1728637090025",
+        "localTime": 1728637090025,
+        "msgId": "1336045309192572530",
+        "needGroupAck": false,
+        "receiverList": undefined,
+        "serverTime": 1728637089318,
+        "status": 2,
+        "to": "261342773706754"
+    }
+]
+ LOG  Received messages from admin: [
+    {
+        "attributes": {},
+        "body": {
+            "content": "Rida123",
+            "lastModifyOperatorId": undefined,
+            "lastModifyTime": undefined,
+            "modifyCount": undefined,
+            "targetLanguageCodes": [Array
+            ],
+            "translations": [Object
+            ],
+            "type": "txt"
+        },
+        "chatType": 1,
+        "conversationId": "261342773706754",
+        "deliverOnlineOnly": false,
+        "direction": "rec",
+        "from": "admin",
+        "groupAckCount": 0,
+        "hasDeliverAck": false,
+        "hasRead": false,
+        "hasReadAck": false,
+        "isBroadcast": false,
+        "isChatThread": false,
+        "isContentReplaced": false,
+        "isOnline": true,
+        "localMsgId": "1728637090025",
+        "localTime": 1728637090025,
+        "msgId": "1336045309192572530",
+        "needGroupAck": false,
+        "receiverList": undefined,
+        "serverTime": 1728637089318,
+        "status": 2,
+        "to": "261342773706754"
+    }
+]
+ LOG  Received messages from admin: [
+    {
+        "attributes": {},
+        "body": {
+            "content": "Rida123",
+            "lastModifyOperatorId": undefined,
+            "lastModifyTime": undefined,
+            "modifyCount": undefined,
+            "targetLanguageCodes": [Array
+            ],
+            "translations": [Object
+            ],
+            "type": "txt"
+        },
+        "chatType": 1,
+        "conversationId": "261342773706754",
+        "deliverOnlineOnly": false,
+        "direction": "rec",
+        "from": "admin",
+        "groupAckCount": 0,
+        "hasDeliverAck": false,
+        "hasRead": false,
+        "hasReadAck": false,
+        "isBroadcast": false,
+        "isChatThread": false,
+        "isContentReplaced": false,
+        "isOnline": true,
+        "localMsgId": "1728637090025",
+        "localTime": 1728637090025,
+        "msgId": "1336045309192572530",
+        "needGroupAck": false,
+        "receiverList": undefined,
+        "serverTime": 1728637089318,
+        "status": 2,
+        "to": "261342773706754"
+    }
+]
+ LOG  Received messages from admin: [
+    {
+        "attributes": {},
+        "body": {
+            "content": "Rida123",
+            "lastModifyOperatorId": undefined,
+            "lastModifyTime": undefined,
+            "modifyCount": undefined,
+            "targetLanguageCodes": [Array
+            ],
+            "translations": [Object
+            ],
+            "type": "txt"
+        },
+        "chatType": 1,
+        "conversationId": "261342773706754",
+        "deliverOnlineOnly": false,
+        "direction": "rec",
+        "from": "admin",
+        "groupAckCount": 0,
+        "hasDeliverAck": false,
+        "hasRead": false,
+        "hasReadAck": false,
+        "isBroadcast": false,
+        "isChatThread": false,
+        "isContentReplaced": false,
+        "isOnline": true,
+        "localMsgId": "1728637090025",
+        "localTime": 1728637090025,
+        "msgId": "1336045309192572530",
+        "needGroupAck": false,
+        "receiverList": undefined,
+        "serverTime": 1728637089318,
+        "status": 2,
+        "to": "261342773706754"
+    }
+]
+ LOG  Received messages from admin: [
+    {
+        "attributes": {},
+        "body": {
+            "content": "Rida123",
+            "lastModifyOperatorId": undefined,
+            "lastModifyTime": undefined,
+            "modifyCount": undefined,
+            "targetLanguageCodes": [Array
+            ],
+            "translations": [Object
+            ],
+            "type": "txt"
+        },
+        "chatType": 1,
+        "conversationId": "261342773706754",
+        "deliverOnlineOnly": false,
+        "direction": "rec",
+        "from": "admin",
+        "groupAckCount": 0,
+        "hasDeliverAck": false,
+        "hasRead": false,
+        "hasReadAck": false,
+        "isBroadcast": false,
+        "isChatThread": false,
+        "isContentReplaced": false,
+        "isOnline": true,
+        "localMsgId": "1728637090025",
+        "localTime": 1728637090025,
+        "msgId": "1336045309192572530",
+        "needGroupAck": false,
+        "receiverList": undefined,
+        "serverTime": 1728637089318,
+        "status": 2,
+        "to": "261342773706754"
+    }
+]
+ LOG  Received messages from admin: [
+    {
+        "attributes": {},
+        "body": {
+            "content": "Rida123",
+            "lastModifyOperatorId": undefined,
+            "lastModifyTime": undefined,
+            "modifyCount": undefined,
+            "targetLanguageCodes": [Array
+            ],
+            "translations": [Object
+            ],
+            "type": "txt"
+        },
+        "chatType": 1,
+        "conversationId": "261342773706754",
+        "deliverOnlineOnly": false,
+        "direction": "rec",
+        "from": "admin",
+        "groupAckCount": 0,
+        "hasDeliverAck": false,
+        "hasRead": false,
+        "hasReadAck": false,
+        "isBroadcast": false,
+        "isChatThread": false,
+        "isContentReplaced": false,
+        "isOnline": true,
+        "localMsgId": "1728637090025",
+        "localTime": 1728637090025,
+        "msgId": "1336045309192572530",
+        "needGroupAck": false,
+        "receiverList": undefined,
+        "serverTime": 1728637089318,
+        "status": 2,
+        "to": "261342773706754"
+    }
+]
+ LOG  Received messages from admin: [
+    {
+        "attributes": {},
+        "body": {
+            "content": "Rida123",
+            "lastModifyOperatorId": undefined,
+            "lastModifyTime": undefined,
+            "modifyCount": undefined,
+            "targetLanguageCodes": [Array
+            ],
+            "translations": [Object
+            ],
+            "type": "txt"
+        },
+        "chatType": 1,
+        "conversationId": "261342773706754",
+        "deliverOnlineOnly": false,
+        "direction": "rec",
+        "from": "admin",
+        "groupAckCount": 0,
+        "hasDeliverAck": false,
+        "hasRead": false,
+        "hasReadAck": false,
+        "isBroadcast": false,
+        "isChatThread": false,
+        "isContentReplaced": false,
+        "isOnline": true,
+        "localMsgId": "1728637090025",
+        "localTime": 1728637090025,
+        "msgId": "1336045309192572530",
+        "needGroupAck": false,
+        "receiverList": undefined,
+        "serverTime": 1728637089318,
+        "status": 2,
+        "to": "261342773706754"
+    }
+]
+ LOG  Received messages from admin: [
+    {
+        "attributes": {},
+        "body": {
+            "content": "Rida123",
+            "lastModifyOperatorId": undefined,
+            "lastModifyTime": undefined,
+            "modifyCount": undefined,
+            "targetLanguageCodes": [Array
+            ],
+            "translations": [Object
+            ],
+            "type": "txt"
+        },
+        "chatType": 1,
+        "conversationId": "261342773706754",
+        "deliverOnlineOnly": false,
+        "direction": "rec",
+        "from": "admin",
+        "groupAckCount": 0,
+        "hasDeliverAck": false,
+        "hasRead": false,
+        "hasReadAck": false,
+        "isBroadcast": false,
+        "isChatThread": false,
+        "isContentReplaced": false,
+        "isOnline": true,
+        "localMsgId": "1728637090025",
+        "localTime": 1728637090025,
+        "msgId": "1336045309192572530",
+        "needGroupAck": false,
+        "receiverList": undefined,
+        "serverTime": 1728637089318,
+        "status": 2,
+        "to": "261342773706754"
+    }
+]
+ LOG  Received messages from admin: [
+    {
+        "attributes": {},
+        "body": {
+            "content": "Rida123",
+            "lastModifyOperatorId": undefined,
+            "lastModifyTime": undefined,
+            "modifyCount": undefined,
+            "targetLanguageCodes": [Array
+            ],
+            "translations": [Object
+            ],
+            "type": "txt"
+        },
+        "chatType": 1,
+        "conversationId": "261342773706754",
+        "deliverOnlineOnly": false,
+        "direction": "rec",
+        "from": "admin",
+        "groupAckCount": 0,
+        "hasDeliverAck": false,
+        "hasRead": false,
+        "hasReadAck": false,
+        "isBroadcast": false,
+        "isChatThread": false,
+        "isContentReplaced": false,
+        "isOnline": true,
+        "localMsgId": "1728637090025",
+        "localTime": 1728637090025,
+        "msgId": "1336045309192572530",
+        "needGroupAck": false,
+        "receiverList": undefined,
+        "serverTime": 1728637089318,
+        "status": 2,
+        "to": "261342773706754"
+    }
+]
+
+Message sent successfully: {
+    "attributes": {},
+    "body": {
+        "displayName": "images (5).jpeg",
+        "fileSize": 0,
+        "fileStatus": 0,
+        "height": 738,
+        "lastModifyOperatorId": undefined,
+        "lastModifyTime": undefined,
+        "localPath": "content://com.android.providers.media.documents/document/image%3A1000053417",
+        "modifyCount": undefined,
+        "remotePath": "https://a41.chat.agora.io/411216339/1407114/chatfiles/301972b0-87b1-11ef-9c4f-d964cec00444",
+        "secret": "MBmZwIexEe-uXbuboTBhxwVUcoji1_-TL3i4R9UrAP5yEbph",
+        "sendOriginalImage": false,
+        "thumbnailLocalPath": "",
+        "thumbnailRemotePath": "",
+        "thumbnailSecret": "",
+        "thumbnailStatus": -1,
+        "type": "img",
+        "width": 415
+    },
+    "chatType": 1,
+    "conversationId": "261342773706754",
+    "deliverOnlineOnly": false,
+    "direction": "send",
+    "from": "user1",
+    "groupAckCount": 0,
+    "hasDeliverAck": false,
+    "hasRead": true,
+    "hasReadAck": false,
+    "isBroadcast": false,
+    "isChatThread": false,
+    "isContentReplaced": false,
+    "isOnline": true,
+    "localMsgId": "1728638055140",
+    "localTime": 1728638055140,
+    "msgId": "1336049461352205942",
+    "needGroupAck": false,
+    "receiverList": undefined,
+    "serverTime": 1728638056047,
+    "status": 2,
+    "to": "261342773706754"
+}
+
+CHATS: [
+    {
+        "id": "1336042238756523638",
+        "message": "hi",
+        "sender": "admin"
+    },
+    {
+        "id": "1336042539542646390",
+        "message": "Hi",
+        "sender": "user1"
+    },
+    {
+        "id": "1336042556051426934",
+        "message": "Kese ho",
+        "sender": "user1"
+    },
+    {
+        "id": "1336043124547391094",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336043229270773362",
+        "message": undefined,
+        "sender": "admin"
+    },
+    {
+        "id": "1336043313735667314",
+        "message": "hiii",
+        "sender": "admin"
+    },
+    {
+        "id": "1336043784210746994",
+        "message": "hii",
+        "sender": "admin"
+    },
+    {
+        "id": "1336044006064262770",
+        "message": "hiii",
+        "sender": "admin"
+    },
+    {
+        "id": "1336045168196849274",
+        "message": "hiiii",
+        "sender": "admin"
+    },
+    {
+        "id": "1336045309192572530",
+        "message": "Rida123",
+        "sender": "admin"
+    },
+    {
+        "id": "1336045908059491958",
+        "message": "Hi",
+        "sender": "user1"
+    },
+    {
+        "id": "1336045997247172214",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336046097910468210",
+        "message": undefined,
+        "sender": "admin"
+    },
+    {
+        "id": "1336049369647943286",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336049461352205942",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336049934591331954",
+        "message": undefined,
+        "sender": "admin"
+    },
+    {
+        "id": "1336050242335805046",
+        "message": "",
+        "sender": "user1"
+    },
+    {
+        "id": "1336050245305372278",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336050323503976054",
+        "message": "Hi",
+        "sender": "user1"
+    },
+    {
+        "id": "1336050328302259830",
+        "message": "",
+        "sender": "user1"
+    }
+]
+
+
+CHATS: [
+    {
+        "id": "1336079501842452086",
+        "message": "Hi",
+        "sender": "user1"
+    },
+    {
+        "id": "1336079612446248566",
+        "message": undefined,
+        "sender": "user1"
+    },
+    {
+        "id": "1336079850603023994",
+        "message": "hi",
+        "sender": "admin"
+    },
+    {
+        "id": "1336079915929308794",
+        "message": undefined,
+        "sender": "admin"
+    }
+]
+//Voice Messages Data
+
+Create Message: {
+    "attributes": {},
+    "body": {
+        "displayName": "audio_1728827476726.mp4", //name msg.body.displayName
+        "duration": "3.51", //duration  msg.body.duration
+        "fileSize": 0,
+        "fileStatus": -1,
+        "lastModifyOperatorId": undefined,
+        "lastModifyTime": undefined,
+        "localPath": "/data/user/0/com.chatapp/files/audio_1728827476726.mp4",
+        "modifyCount": undefined,
+        "remotePath": "",   //Empty for now msg.body.remotePath
+        "secret": "",
+        "type": "voice"   //type
+    },
+    "chatType": 1,
+    "conversationId": "261542283116545",
+    "deliverOnlineOnly": false,
+    "direction": "send",
+    "from": "user1",    //sender msg.from
+    "groupAckCount": 0,
+    "hasDeliverAck": false,
+    "hasRead": true,
+    "hasReadAck": false,
+    "isBroadcast": false,
+    "isChatThread": false,
+    "isContentReplaced": false,
+    "isOnline": true,
+    "localMsgId": "1728827480630",  //ID msg.localMsgId
+    "localTime": 1728827480630,
+    "msgId": "172882748063010951",
+    "needGroupAck": false,
+    "receiverList": undefined,
+    "serverTime": 1728827480630,
+    "status": 0,
+    "to": "261542283116545"
+}
+
+ LOG  Message sent successfully: {
+    "attributes": {},
+    "body": {
+        "displayName": "audio_1728827476726.mp4",   //name msg.body.displayName
+        "duration": 3,  //duration  msg.body.duration
+        "fileSize": 0,
+        "fileStatus": 0,
+        "lastModifyOperatorId": undefined,
+        "lastModifyTime": undefined,
+        "localPath": "/data/user/0/com.chatapp/files/audio_1728827476726.mp4", //path1
+        "modifyCount": undefined,
+        "remotePath": "https://a41.chat.agora.io/411216339/1407114/chatfiles/3b7162c0-896a-11ef-b693-7b0926b08fb2",  //path2
+        "secret": "O3GJ0IlqEe-t0gUxGDu5b3l3T_KQCku9JzaRtUCMrlYAKw_3",
+        "type": "voice"   //type
+    },
+    "chatType": 1,
+    "conversationId": "261542283116545",
+    "deliverOnlineOnly": false,
+    "direction": "send",
+    "from": "user1",   //sender msg.from
+    "groupAckCount": 0,
+    "hasDeliverAck": false,
+    "hasRead": true,
+    "hasReadAck": false,
+    "isBroadcast": false,
+    "isChatThread": false,
+    "isContentReplaced": false,
+    "isOnline": true,
+    "localMsgId": "1728827480630",   //ID msg.localMsgId
+    "localTime": 1728827480630,
+    "msgId": "1336863045158182518",
+    "needGroupAck": false,
+    "receiverList": undefined,
+    "serverTime": 1728827483319,
+    "status": 2,
+    "to": "261542283116545"
 }

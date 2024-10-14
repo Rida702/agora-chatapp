@@ -41,7 +41,8 @@ const CreateGroup = ({ updateGroups }) => {
                 <Image
                     source={require('../../assets/icons/plus.png')}
                     resizeMode="contain"
-                    className="w-6 h-6"
+                    style={{ tintColor: 'white' }}
+                    className="w-6 h-6 mr-4"
                 />
             </TouchableOpacity>
 
