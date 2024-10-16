@@ -11,7 +11,9 @@ export const AgoraProvider = ({ children }) => {
   const [groupManager, setGroupManager] = useState(null);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const appKey = '411216339#1407114'; 
+  // const appKey = process.env.REACT_APP_API_KEY
+  const appKey = '411216339#1407114'
+
   useEffect(() => {
     // Function to initialize Agora SDK
     const initAgora = async () => {
@@ -29,7 +31,7 @@ export const AgoraProvider = ({ children }) => {
     if (!isInitialized) {
       initAgora();
     }
-  }, [isInitialized]);
+  }, []);
 
   return (
     <AgoraContext.Provider value={{ chatClient, isInitialized, appKey, chatManager, groupManager }}>

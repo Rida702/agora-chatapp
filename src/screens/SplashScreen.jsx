@@ -2,7 +2,7 @@ import { View, Image, Alert } from 'react-native';
 import React, { useContext, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import AgoraContext from '../context/AgoraContext';
-import { login } from '../agora/authAgora';
+import { login } from '../agora/Group/helpers';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = () => {
@@ -18,7 +18,7 @@ const SplashScreen = () => {
                 const chatToken = await AsyncStorage.getItem('chatToken');
                 console.log("isLoggedIn", isLoggedIn)
                 if (isLoggedIn) {
-                    const success = await login(isInitialized, chatClient, username, chatToken);
+                    const success = await login(chatClient, username, chatToken);
                     navigation.replace('HomeScreen'); 
                 } else {
                     navigation.replace('LoginScreen');

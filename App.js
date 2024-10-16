@@ -14,6 +14,7 @@ import SplashScreen from './src/screens/SplashScreen'
 import CreateGroup from './src/screens/CreateGroup';
 import CreateNewGroup from './src/components/CreateNewGroup'
 import GroupInfo from './src/screens/GroupInfo';
+import FullImage from './src/components/FullImage';
 
 
 import { AgoraProvider } from './src/context/AgoraContext';
@@ -97,6 +98,7 @@ const App = () => {
           <Stack.Screen name="ShowGroup" component={ShowGroup} />
           <Stack.Screen name="GroupDetails" component={GroupDetails} />
           <Stack.Screen name="GroupInfo" component={GroupInfo} />
+          <Stack.Screen name="FullImage" component={FullImage} />
         </Stack.Navigator>
       </NavigationContainer>
     </AgoraProvider>

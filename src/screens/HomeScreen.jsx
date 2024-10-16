@@ -2,27 +2,27 @@ import React, { useContext, useState, useEffect } from 'react';
 import { SafeAreaView, Text, View, ActivityIndicator, TextInput } from 'react-native';
 import AgoraContext from '../context/AgoraContext';
 import ShowGroup from '../components/ShowGroup';
-import { getjoinedgroups } from '../agora/groupManager';
+import { getjoinedgroups } from '../agora/Group/helpers';
 import CreateNewGroup from '../components/CreateNewGroup'
 
 
 const HomeScreen = () => {
-    const { chatClient, isInitialized } = useContext(AgoraContext);
+    const { chatClient } = useContext(AgoraContext);
     const [joinedGroups, setJoinedGroups] = useState([]);
     const [loading, setLoading] = useState(true);
     const [query, setQuery] = useState('');
 
     useEffect(() => {
         const fetchJoinedGroups = async () => {
-            const groups = await getjoinedgroups(isInitialized, chatClient);
+            const groups = await getjoinedgroups(chatClient);
             setJoinedGroups(groups);
             setLoading(false);
         };
 
-        if (isInitialized && chatClient !== undefined) {
+        if ( chatClient !== undefined) {
             fetchJoinedGroups();
         }
-    }, [isInitialized]);
+    }, []);
 
     // Function to update the group list
     const updateGroups = (newGroups) => {

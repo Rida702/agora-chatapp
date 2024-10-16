@@ -1,13 +1,13 @@
 import React, { useContext, useState, useRef } from 'react';
 import { View, TextInput, TouchableOpacity, Text, Image, Alert } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { creategroup, getjoinedgroups } from '../agora/groupManager';
+import { creategroup, getjoinedgroups } from '../agora/Group/helpers';
 import AgoraContext from '../context/AgoraContext';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const CreateGroup = ({ updateGroups }) => {
-    const { chatClient, isInitialized } = useContext(AgoraContext);
+    const { chatClient } = useContext(AgoraContext);
     const [groupName, setGroupName] = useState('');
     const [groupDescription, setGroupDescription] = useState('');
     const refRBSheet = useRef();
@@ -19,8 +19,8 @@ const CreateGroup = ({ updateGroups }) => {
             return;
         }
         try {
-            const group = await creategroup(isInitialized, chatClient, groupName, groupDescription);
-            const updatedGroups = await getjoinedgroups(isInitialized, chatClient);
+            const group = await creategroup( chatClient, groupName, groupDescription);
+            const updatedGroups = await getjoinedgroups(chatClient);
             updateGroups(updatedGroups);
 
             setGroupName('');
@@ -41,7 +41,8 @@ const CreateGroup = ({ updateGroups }) => {
                 <Image
                     source={require('../../assets/icons/plus.png')}
                     resizeMode="contain"
-                    className="w-6 h-6"
+                    style={{ tintColor: 'white' }}
+                    className="w-6 h-6 mr-4"
                 />
             </TouchableOpacity>
 

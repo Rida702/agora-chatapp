@@ -10,11 +10,11 @@ import {
     Platform
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';  
-import { creategroup, getjoinedgroups } from '../agora/groupManager';
+import { creategroup, getjoinedgroups } from '../agora/Group/helpers';
 import AgoraContext from '../context/AgoraContext';
 
 const CreateGroup = () => {
-    const { chatClient, isInitialized } = useContext(AgoraContext)
+    const { chatClient } = useContext(AgoraContext)
     const [groupName, setGroupName] = useState('');
     const [groupDescription, setGroupDescription] = useState('');
     const navigation = useNavigation();
@@ -28,8 +28,8 @@ const CreateGroup = () => {
         }
 
         try {
-            const group = await creategroup(isInitialized, chatClient, groupName, groupDescription);
-            const updatedGroups = await getjoinedgroups(isInitialized, chatClient);
+            const group = await creategroup(chatClient, groupName, groupDescription);
+            const updatedGroups = await getjoinedgroups(chatClient);
             updateGroups(updatedGroups); 
             
             setGroupName('');

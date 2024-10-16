@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import {
     SafeAreaView,
-    ScrollView,
     Text,
     TextInput,
     View,
@@ -11,17 +10,17 @@ import {
 //To initialize Agora SDK
 import AgoraContext from '../context/AgoraContext';
 //Authorize User
-import { login, logout } from '../agora/authAgora';
+import { login, logout } from '../agora/Group/helpers';
 
 
 const LoginScreen = ({ navigation }) => {
-    const { chatClient, isInitialized } = useContext(AgoraContext);
+    const { chatClient } = useContext(AgoraContext);
     const title = 'Group Chat App';
-    const [username, setUsername] = React.useState('user1');
-    const [chatToken, setChatToken] = React.useState('007eJxTYOi8fb7Wcn2SmlfNmZz5MZrVxqYNgru1DA/F1PiYnfR4+EmBIdHQ0MLI0tg4KS3RyMQ8zcjCyMLYKDEx0dDcNMnMwMIk4QhbekMgI0P+r0NMjAysDIxACOKrMBinWhglmhgb6FoYWpjoGhqmpulapBgl6RqbG6YlJSemmponGQMA7cQmLQ==')
-
+    const [username, setUsername] = React.useState(process.env.REACT_APP_USERNAME);
+    const [chatToken, setChatToken] = React.useState(process.env.REACT_APP_CHAT_TOKEN);
+    
     const handleLogin = async () => {
-        const success = await login(isInitialized, chatClient, username, chatToken);
+        const success = await login(chatClient, username, chatToken);
         console.log(success)
         if (success) {
             Alert.alert('Login Successful');
@@ -62,7 +61,7 @@ const LoginScreen = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity className="bg-blue-500 h-10 w-[28%] rounded" onPress={() => logout(isInitialized, chatClient)}>
+                <TouchableOpacity className="bg-blue-500 h-10 w-[28%] rounded" onPress={() => logout(chatClient)}>
                     <Text className="text-white text-center font-bold mt-2">
                         SIGN OUT
                     </Text>
