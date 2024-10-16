@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TouchableOpacity, Image } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import RNFS from 'react-native-fs';
@@ -15,11 +15,24 @@ const RecordVoice = ({ setVoiceMessageData }) => {
         return `audio_${timestamp}.mp4`; 
     };
 
+    const changeRecordingStatus = () => {
+        setIsRecording( status => !status )
+    };
+
+    useEffect(() => {
+        console.log('Recording Status changed:', isRecording);
+    }, [isRecording]);
+
+    useEffect(() => {
+        setIsRecording(false)
+    }, []);
+
     async function startRecording() {
-        if (isRecording) {
+        if (isRecording ) {
             console.log('Recording already in progress.');
             return;
-        }
+        } 
+        changeRecordingStatus()
 
         const uniqueFileName = createUniqueFileName();
         const path = `${RNFS.DocumentDirectoryPath}/${uniqueFileName}`;
@@ -27,7 +40,6 @@ const RecordVoice = ({ setVoiceMessageData }) => {
         setFileName(uniqueFileName);
 
         try {
-            setIsRecording(true);
             const result = await audioRecorderPlayer.startRecorder(path);
             console.log('Recording started:', result);
 
@@ -36,6 +48,7 @@ const RecordVoice = ({ setVoiceMessageData }) => {
                 console.log('Recording duration:', e.currentPosition);
             });
         } catch (error) {
+            // setIsRecording(false);
             console.error('Failed to start recording:', error);
         }
     }
@@ -44,8 +57,8 @@ const RecordVoice = ({ setVoiceMessageData }) => {
         if (!isRecording) {
             console.log('Recording is not in progress.');
             return; 
-        }
-
+        } 
+        console.log("Stop Recording: ", isRecording)
         try {
             const result = await audioRecorderPlayer.stopRecorder();
             audioRecorderPlayer.removeRecordBackListener();
@@ -57,14 +70,15 @@ const RecordVoice = ({ setVoiceMessageData }) => {
             console.log(`Recording file name: ${fileName}`);
             console.log(`Recording duration in seconds: ${durationInSeconds}`);
             console.log(`Recording file path: ${recordingPath}`);
-            const voiceMessage = { fileUri: recordingPath, fileName: fileName, duration: durationInSeconds }
-            setVoiceMessageData(voiceMessage);
+
+            if (durationInSeconds > 0.01) {
+                const voiceMessage = { fileUri: recordingPath, fileName: fileName, duration: durationInSeconds };
+                setVoiceMessageData(voiceMessage);
+            }
         } catch (error) {
             console.error('Failed to stop recording:', error);
         }
     }
-
-    
 
     return (
         <>

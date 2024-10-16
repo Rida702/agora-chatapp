@@ -2,42 +2,38 @@ import React from 'react';
 import { TouchableOpacity, Image, Alert } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 
-const UploadFiles = ({setImageData}) => {
-
+const UploadFiles = ({ setImageData, setVoiceMessageData, setVideoData, setFileData }) => {
+  
   const selectDoc = async () => {
     try {
       const doc = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
         allowMultiSelection: true
       });
-      
-      const pickedImage = {
-        fileName: doc[0].name, 
-        fileSize: doc[0].size, 
-        fileType: doc[0].type, 
-        fileUri: doc[0].uri
+      const pickedDoc = { fileName: doc[0].name, fileSize: doc[0].size, fileType: doc[0].type, fileUri: doc[0].uri }
+      console.log("pickedDoc: ",pickedDoc)
+      const extension = doc[0].name.split('.').pop(); 
+      console.log(extension);  
+      if ( extension === 'pdf' || extension === 'docx' || extension === 'xlsx' || extension === 'pptx' || extension === 'txt' || extension === 'zip') {
+        setFileData(pickedDoc);
+      } else if (doc[0].type === 'image/jpeg') {
+        setImageData(pickedDoc);
+      } else if (doc[0].type === 'audio/ogg' || doc[0].type === 'audio/mpeg') {
+        setVoiceMessageData(pickedDoc);
+      } 
+      else if (doc[0].type === 'video/mp4') {
+        setVideoData(pickedDoc);
       }
-      console.log("Picked Image: ",pickedImage)
-      setImageData(pickedImage);
     } catch (err) {
       if (DocumentPicker.isCancel(err))
         console.log("User Cancelled the Upload", err)
       else
-        console.log(err)
+        console.log("Error: ", err);
     }
-  }
-
+  };
 
   return (
     <>
-      {/* <TouchableOpacity
-        className="ml-2 bg-blue-500 p-2 rounded-full"
-        onPress={pickImage}
-      >
-        <Image source={require('../../assets/icons/attach-file.png')}
-          resizeMode="contain" className="w-6 h-6" />
-      </TouchableOpacity> */}
-
       <TouchableOpacity
         className="ml-2 bg-blue-500 p-2 rounded-full"
         onPress={selectDoc}
@@ -45,6 +41,7 @@ const UploadFiles = ({setImageData}) => {
         <Image source={require('../../assets/icons/attach-file.png')}
           resizeMode="contain" className="w-6 h-6" />
       </TouchableOpacity>
+
     </>
   );
 };

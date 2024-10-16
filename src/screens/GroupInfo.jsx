@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, RefreshControl } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { getGroupInfo } from '../agora/groupManager';
 import AgoraContext from '../context/AgoraContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { makeadmin, addgroupmembers, registerAdminAddedListener, blockmembers, mutemembers, unblockmembers, unmutemembers, leavegroup } from '../agora/groupInfo';
+import { getGroupInfo, makeadmin, addgroupmembers, registerAdminAddedListener, blockmembers, mutemembers, unblockmembers, unmutemembers, leavegroup } from '../agora/Group/helpers';
 
 const GroupInfo = () => {
-    const { chatClient, isInitialized } = useContext(AgoraContext);
+    const { chatClient } = useContext(AgoraContext);
     const route = useRoute();
     const { groupId, groupName } = route.params;
     const [groupInfo, setGroupInfo] = useState(null);
@@ -16,7 +15,7 @@ const GroupInfo = () => {
     
     const fetchGroupInfo = async () => {
         try {
-            const info = await getGroupInfo(isInitialized, chatClient, groupId);
+            const info = await getGroupInfo(chatClient, groupId);
             setGroupInfo(info);
         } catch (error) {
             console.log('Error fetching group info:', error);
@@ -32,16 +31,16 @@ const GroupInfo = () => {
     useEffect(() => {
         registerAdminAddedListener(chatClient);
         fetchGroupInfo();
-    }, [isInitialized, chatClient, groupId]);
+    }, [chatClient, groupId]);
 
     const showAlert = (member, type) => {
         let options = [];
 
         if (type === 'admin') {
             options = [
-                // { text: 'Remove Admin', onPress: () => removemember(isInitialized, chatClient, groupId, member) },
-                { text: 'Block', onPress: () => blockmembers(isInitialized, chatClient, groupId, member) },
-                { text: 'Mute', onPress: () => mutemembers(isInitialized, chatClient, groupId, member) },
+                // { text: 'Remove Admin', onPress: () => removemember( chatClient, groupId, member) },
+                { text: 'Block', onPress: () => blockmembers( chatClient, groupId, member) },
+                { text: 'Mute', onPress: () => mutemembers( chatClient, groupId, member) },
                 { text: 'Cancel', style: 'cancel' },
             ];
         } else if (type === 'member') {
@@ -50,24 +49,24 @@ const GroupInfo = () => {
                     text: 'Make Admin',
                     onPress: () => {   
                         registerAdminAddedListener(chatClient);               
-                        makeadmin(isInitialized, chatClient, groupId, member);              
+                        makeadmin(chatClient, groupId, member);              
                     }
                   },
                   
-                { text: 'Block', onPress: () => blockmembers(isInitialized, chatClient, groupId, member) },
-                // { text: 'Remove', onPress: () => removemember(isInitialized, chatClient, groupId, member) },
-                { text: 'Mute', onPress: () => mutemembers(isInitialized, chatClient, groupId, member) },
+                { text: 'Block', onPress: () => blockmembers(chatClient, groupId, member) },
+                // { text: 'Remove', onPress: () => removemember(chatClient, groupId, member) },
+                { text: 'Mute', onPress: () => mutemembers( chatClient, groupId, member) },
                 { text: 'Cancel', style: 'cancel' },
             ];
         } else if (type === 'blocked') {
 
             options = [
-                { text: 'Unblock', onPress: () => unblockmembers(isInitialized, chatClient, groupId, member) },
+                { text: 'Unblock', onPress: () => unblockmembers(chatClient, groupId, member) },
                 { text: 'Cancel', style: 'cancel' },
             ];
         } else if (type === 'muted') {
             options = [
-                { text: 'Unmute', onPress: () => unmutemembers(isInitialized, chatClient, groupId, member) },
+                { text: 'Unmute', onPress: () => unmutemembers(chatClient, groupId, member) },
                 { text: 'Cancel', style: 'cancel' },
             ];
         }
@@ -149,7 +148,7 @@ const GroupInfo = () => {
                 <View className="flex-row justify-between items-center p-4">
                     <TouchableOpacity
                         className="ml-2 bg-blue-500 p-3 rounded-full"
-                        onPress={() => leavegroup(isInitialized, chatClient, groupId)}
+                        onPress={() => leavegroup(chatClient, groupId)}
                     >
                         <Text className="text-white text-xl">Exit Group</Text>
                     </TouchableOpacity>
@@ -165,7 +164,7 @@ const GroupInfo = () => {
                             value={user}
                         />
                         <TouchableOpacity className="ml-2 bg-blue-500 p-2 rounded-full"
-                            onPress={() => addgroupmembers(isInitialized, chatClient, groupId, user)}
+                            onPress={() => addgroupmembers(chatClient, groupId, user)}
                         >
                             <Text className="text-white">Add</Text>
                         </TouchableOpacity>
